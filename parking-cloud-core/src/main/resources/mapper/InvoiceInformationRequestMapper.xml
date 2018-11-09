@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.InvoiceInformationRequestMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		<id column="invoice_id" property="invoiceId" />
+		<result column="invoice_flow_number" property="invoiceFlowNumber" />
+		<result column="bill_point_code" property="billPointCode" />
+		<result column="invoice_type_code" property="invoiceTypeCode" />
+		<result column="apply_way" property="applyWay" />
+		<result column="buy_id" property="buyId" />
+		<result column="sale_id" property="saleId" />
+		<result column="mobile" property="mobile" />
+		<result column="email" property="email" />
+		<result column="payee" property="payee" />
+		<result column="ssuer" property="ssuer" />
+		<result column="manager" property="manager" />
+		<result column="bill_type" property="billType" />
+		<result column="original_invoice_code" property="originalInvoiceCode" />
+		<result column="original_invoice_number" property="originalInvoiceNumber" />
+		<result column="remarks" property="remarks" />
+		<result column="bill_channel" property="billChannel" />
+		<result column="apply_bill_date" property="applyBillDate" />
+		<result column="total_amout" property="totalAmout" />
+		<result column="total_tax_amout" property="totalTaxAmout" />
+		<result column="price_tax_total" property="priceTaxTotal" />
+		<result column="bill_status" property="billStatus" />
+		<result column="request_data" property="requestData" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+	</resultMap>
+
+	<resultMap id="joinResultMap" type="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		<id column="invoice_id" property="invoiceId" />
+		<result column="invoice_flow_number" property="invoiceFlowNumber" />
+		<result column="bill_point_code" property="billPointCode" />
+		<result column="invoice_type_code" property="invoiceTypeCode" />
+		<result column="apply_way" property="applyWay" />
+		<result column="buy_id" property="buyId" />
+		<result column="sale_id" property="saleId" />
+		<result column="mobile" property="mobile" />
+		<result column="email" property="email" />
+		<result column="payee" property="payee" />
+		<result column="ssuer" property="ssuer" />
+		<result column="manager" property="manager" />
+		<result column="bill_type" property="billType" />
+		<result column="original_invoice_code" property="originalInvoiceCode" />
+		<result column="original_invoice_number" property="originalInvoiceNumber" />
+		<result column="remarks" property="remarks" />
+		<result column="bill_channel" property="billChannel" />
+		<result column="apply_bill_date" property="applyBillDate" />
+		<result column="total_amout" property="totalAmout" />
+		<result column="total_tax_amout" property="totalTaxAmout" />
+		<result column="price_tax_total" property="priceTaxTotal" />
+		<result column="bill_status" property="billStatus" />
+		<result column="request_data" property="requestData" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<association property="salesInformation" resultMap="com.yxytech.parkingcloud.core.mapper.SalesInformationMapper.BaseResultMap"></association>
+		<association property="customer" resultMap="com.yxytech.parkingcloud.core.mapper.CustomerMapper.BaseResultMap"></association>
+		<association property="invoiceInformationResult" resultMap="com.yxytech.parkingcloud.core.mapper.InvoiceInformationResultMapper.BaseResultMap"></association>
+
+	</resultMap>
+
+
+	<resultMap id="joinListMap" type="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		<id column="invoice_id" property="invoiceId" />
+		<result column="invoice_flow_number" property="invoiceFlowNumber" />
+		<result column="bill_point_code" property="billPointCode" />
+		<result column="invoice_type_code" property="invoiceTypeCode" />
+		<result column="apply_way" property="applyWay" />
+		<result column="buy_id" property="buyId" />
+		<result column="sale_id" property="saleId" />
+		<result column="mobile" property="mobile" />
+		<result column="email" property="email" />
+		<result column="payee" property="payee" />
+		<result column="ssuer" property="ssuer" />
+		<result column="manager" property="manager" />
+		<result column="bill_type" property="billType" />
+		<result column="original_invoice_code" property="originalInvoiceCode" />
+		<result column="original_invoice_number" property="originalInvoiceNumber" />
+		<result column="remarks" property="remarks" />
+		<result column="bill_channel" property="billChannel" />
+		<result column="apply_bill_date" property="applyBillDate" />
+		<result column="total_amout" property="totalAmout" />
+		<result column="total_tax_amout" property="totalTaxAmout" />
+		<result column="price_tax_total" property="priceTaxTotal" />
+		<result column="bill_status" property="billStatus" />
+		<result column="request_data" property="requestData" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<association property="orderInfo" resultMap="com.yxytech.parkingcloud.core.mapper.OrderInfoMapper.BaseResultMap"></association>
+		<association property="salesInformation" resultMap="com.yxytech.parkingcloud.core.mapper.SalesInformationMapper.BaseResultMap"></association>
+		<association property="customer" resultMap="com.yxytech.parkingcloud.core.mapper.CustomerMapper.BaseResultMap"></association>
+		<association property="invoiceDetail" resultMap="com.yxytech.parkingcloud.core.mapper.InvoiceDetailMapper.BaseResultMap"></association>
+		<association property="invoiceInformationResult" resultMap="com.yxytech.parkingcloud.core.mapper.InvoiceInformationResultMapper.BaseResultMap">
+		</association>
+
+
+	</resultMap>
+
+
+	<select id="selectPage" resultMap="joinResultMap" resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT * FROM yxy_invoice_information_request
+		INNER JOIN yxy_invoice_information_result ON yxy_invoice_information_result.invoice_id = yxy_invoice_information_request.invoice_id
+		LEFT JOIN yxy_sales_information
+		ON yxy_sales_information.id = yxy_invoice_information_request.sale_id
+		LEFT JOIN yxy_organzation ON yxy_sales_information.org_id = yxy_organzation.id
+		LEFT JOIN yxy_customer ON yxy_invoice_information_request.customer_id = yxy_customer.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY yxy_invoice_information_request.invoice_id DESC
+	</select>
+
+	<select id="selectList" resultMap="joinListMap" resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT * FROM yxy_invoice_information_request
+		LEFT JOIN yxy_order_invoice
+		ON yxy_invoice_information_request.invoice_id = yxy_order_invoice.invoice_id
+		LEFT JOIN yxy_order_info ON yxy_order_invoice.order_id = yxy_order_info.id
+		LEFT JOIN yxy_sales_information
+		ON yxy_sales_information.id = yxy_invoice_information_request.sale_id
+		LEFT JOIN yxy_invoice_information_result ON yxy_invoice_information_result.invoice_id = yxy_invoice_information_request.invoice_id
+		LEFT JOIN yxy_invoice_detail ON yxy_invoice_detail.invoice_id = yxy_invoice_information_request.invoice_id
+		LEFT JOIN yxy_customer ON yxy_invoice_information_request.customer_id = yxy_customer.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY yxy_invoice_information_request.invoice_id DESC
+	</select>
+
+	<select id="selectRequestPage"  resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT invoice_id, invoice_flow_number, apply_bill_date, price_tax_total, bill_status, created_at FROM yxy_invoice_information_request
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY invoice_id DESC
+	</select>
+
+	<select id="selectRequestList"   resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT * FROM yxy_invoice_information_request
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY invoice_id DESC
+	</select>
+
+	<select id="selectLastOne"   resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT * FROM yxy_invoice_information_request
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY invoice_id DESC LIMIT 1
+	</select>
+
+	<select id="getLastUsedInformation" resultType="java.lang.String">
+		select request_data from yxy_invoice_information_request where request_data like '%customer_type":1%'
+			AND customer_id = #{userId}
+		ORDER BY created_at desc limit 1
+	</select>
+
+
+</mapper>

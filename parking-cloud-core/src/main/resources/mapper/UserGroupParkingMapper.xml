@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.UserGroupParkingMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.UserGroupParking">
+		<id column="id" property="id" />
+		<result column="group_id" property="groupId" />
+		<result column="parking_id" property="parkingId" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_by" property="updatedBy" />
+	</resultMap>
+
+</mapper>

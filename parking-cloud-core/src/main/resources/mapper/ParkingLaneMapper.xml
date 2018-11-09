@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ParkingLaneMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.ParkingLane">
+		<result column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="lane_type" property="laneType" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_port_id" property="parkingPortId" />
+		<result column="port_type" property="portType" />
+		<result column="created_by" property="createdBy" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_by" property="updatedBy" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="is_using" property="isUsing" />
+	</resultMap>
+
+	<select id="selectPage" resultType="com.yxytech.parkingcloud.core.entity.ParkingLane">
+		SELECT yxy_parking_lane.*,
+			yxy_parking.full_name AS parkingName,
+		    yxy_parking_port.code as parkingPortCode
+		FROM yxy_parking_lane
+		LEFT JOIN yxy_parking ON
+		yxy_parking_lane.parking_id = yxy_parking.id
+		LEFT  JOIN yxy_parking_port ON
+		yxy_parking_lane.parking_port_id = yxy_parking_port.id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:yxy_parking_lane.parking_id*/
+		</where>
+		ORDER BY yxy_parking_lane.id ASC
+	</select>
+</mapper>

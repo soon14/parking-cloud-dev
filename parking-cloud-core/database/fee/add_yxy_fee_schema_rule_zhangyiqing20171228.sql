@@ -1,0 +1,1 @@
+ALTER TABLE yxy_fee_schema_rule ADD org_id bigint;

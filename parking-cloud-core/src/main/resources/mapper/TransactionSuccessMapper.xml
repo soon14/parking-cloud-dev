@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.TransactionSuccessMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.TransactionSuccess">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="pay_way" property="payWay" />
+		<result column="pay_method" property="payMethod" />
+		<result column="amount" property="amount" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+	</resultMap>
+
+</mapper>

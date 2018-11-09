@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.LogMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Log">
+		<result column="time" property="time" />
+		<result column="remote_ip" property="remoteIp" />
+		<result column="user_id" property="userId" />
+		<result column="uri" property="uri" />
+		<result column="ret_code" property="retCode" />
+		<result column="query_string" property="queryString" />
+		<result column="params" property="params" />
+		<result column="ret" property="ret" />
+		<result column="executed_time" property="executedTime" />
+		<result column="level" property="level" />
+		<result column="message" property="message" />
+	</resultMap>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><fwpackage><jsnr>
+    <fwdm>$salesInformation.billSeviceCode</fwdm>
+    <nsrsbh>$salesInformation.taxpayerIdentificationNumber</nsrsbh>
+    <kpqd>0</kpqd><jrdm>aabbccddeeff</jrdm></jsnr><ywnr><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+    <request><fpqqlsh>$flowNumber</fpqqlsh>
+        <kpddm>$salesInformation.billCode</kpddm>
+        <fplxdm>026</fplxdm>
+        <ghdwmc>$!query.header</ghdwmc>
+        <ghdwdm>$!query.tax_id_number</ghdwdm>
+        <ghdwdzdh>$!query.location  $!query.mobile</ghdwdzdh>
+        <ghdwyhzh>$!query.bank  $!qury.bank_account</ghdwyhzh>
+        <gfkhdh>$!mobile</gfkhdh>
+        <gfkhyx>$!email</gfkhyx>
+        <xsdwmc>$salesInformation.invoiceHeader</xsdwmc>
+        <xsdwdm>$salesInformation.taxpayerIdentificationNumber</xsdwdm>
+        <xsdwdzdh>$salesInformation.location  $salesInformation.mobile</xsdwdzdh>
+        <xsdwyhzh/><skr>收款人</skr><kpr>开票员</kpr><fhr>审核人</fhr><kplx>0</kplx><yfpdm/><yfphm/><hjje/><hjse/><jshj>$totalAmout</jshj><bz/><bbh>17.0</bbh><byzd1/><byzd2/><byzd3/><fpmxList><fpmx><fpmxxh>1</fpmxxh><fphxz>0</fphxz><spbm>3040502020200000000</spbm><zxbm>01</zxbm><spmc>停车费</spmc><spsm/><ggxh/><dw/><spsl/><spdj/><je>$totalAmout</je><kce/><se/><sl>$salesInformation.taxRate</sl><zhdyhh/><hsbz>1</hsbz><zzstsgl>$salesInformation.vatTaxSpecialManage</zzstsgl><yhzcbs>1</yhzcbs><lslbs/><byzd1/><byzd2/></fpmx></fpmxList><jylshList>#foreach($orderTransaction in $orderTransactions)<jylsh>$orderTransaction.uuid</jylsh>#end</jylshList></request>]]></ywnr></fwpackage>

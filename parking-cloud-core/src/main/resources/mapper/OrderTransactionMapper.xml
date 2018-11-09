@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.OrderTransactionMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.OrderTransaction">
+		<id column="id" property="uuid" />
+		<result column="order_number" property="orderNumber" />
+		<result column="user_id" property="userId" />
+		<result column="mch_id" property="mchId" />
+		<result column="parking_id" property="parkingId" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="pay_way" property="payWay" />
+		<result column="pay_method" property="payMethod" />
+		<result column="amount" property="amount" />
+		<result column="created_at" property="createdAt" />
+		<result column="created_way" property="createdWay" />
+		<result column="transaction_id" property="transactionId" />
+		<result column="finished_at" property="finishedAt" />
+		<result column="transaction_way" property="transactionWay" />
+		<result column="transaction_detail" property="transactionDetail" />
+	</resultMap>
+
+    <select id="getLastTransactionDate" resultType="java.util.Date">
+		SELECT max(created_at) FROM yxy_order_transaction
+		WHERE order_id = #{orderId} AND created_way = 0 AND status = 1 AND pay_way != 5
+	</select>
+
+</mapper>

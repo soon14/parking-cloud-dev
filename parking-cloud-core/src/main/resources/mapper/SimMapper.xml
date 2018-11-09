@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.SimMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Sim">
+		<id column="id" property="id" />
+		<result column="sim_number" property="simNumber" />
+		<result column="imsi" property="imsi" />
+		<result column="operator" property="operator" />
+		<result column="network_type" property="networkType" />
+		<result column="network_flow" property="networkFlow" />
+		<result column="status" property="status" />
+		<result column="put_in_at" property="putInAt" />
+		<result column="put_out_at" property="putOutAt" />
+		<result column="startusing_at" property="startusingAt" />
+		<result column="fac_org_id" property="facOrgId" />
+		<result column="manage_org_id" property="manageOrgId" />
+		<result column="parking_id" property="parkingId" />
+		<result column="manager" property="manager" />
+		<result column="teminal_device_id" property="teminalDeviceId" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<select id="selectByPage" resultType="com.yxytech.parkingcloud.core.entity.Sim">
+		select s.*,
+		org1.full_name as manageOrgName,
+		org2.full_name as facOrgName,
+		cha.system_number as terminalDeviceCode,
+		p.full_name as parkingName
+		from yxy_sim s
+		left join yxy_organzation org1 on s.manage_org_id = org1.id
+		left join yxy_organzation org2 on s.fac_org_id = org2.id
+		left join yxy_charge_facility cha on s.teminal_device_id = cha.id
+		left join yxy_parking p on s.parking_id = p.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+		order by s.id asc
+	</select>
+
+</mapper>

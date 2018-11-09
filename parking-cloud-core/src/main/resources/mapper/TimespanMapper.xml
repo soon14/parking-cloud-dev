@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.TimespanMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Timespan">
+		<id column="id" property="id" />
+		<result column="started_at" property="startedAt" />
+		<result column="end_at" property="endAt" />
+		<result column="cycle" property="cycle" />
+		<result column="freelist_id" property="freelistId" />
+	</resultMap>
+
+</mapper>

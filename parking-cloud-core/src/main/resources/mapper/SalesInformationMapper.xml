@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.SalesInformationMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.SalesInformation">
+		<id column="id" property="id" />
+		<result column="invoice_header" property="invoiceHeader" />
+		<result column="taxpayer_identification_number" property="taxpayerIdentificationNumber" />
+		<result column="location" property="location" />
+		<result column="mobile" property="mobile" />
+		<result column="bank" property="bank" />
+		<result column="bank_account" property="bankAccount" />
+		<result column="in_use" property="inUse" />
+		<result column="used_time" property="usedTime" />
+		<result column="un_used_time" property="unUsedTime" />
+		<result column="organzation_id" property="organzationId" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<association property="organization" resultMap="com.yxytech.parkingcloud.core.mapper.OrganzationMapper.BaseResultMap"></association>
+	</resultMap>
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="joinResultMap" type="com.yxytech.parkingcloud.core.entity.SalesInformation">
+		<id column="id" property="id" />
+		<result column="invoice_header" property="invoiceHeader" />
+		<result column="taxpayer_identification_number" property="taxpayerIdentificationNumber" />
+		<result column="location" property="location" />
+		<result column="mobile" property="mobile" />
+		<result column="bank" property="bank" />
+		<result column="bank_account" property="bankAccount" />
+		<result column="in_use" property="inUse" />
+		<result column="used_time" property="usedTime" />
+		<result column="un_used_time" property="unUsedTime" />
+		<result column="organzation_id" property="organzationId" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<association property="organization" resultMap="com.yxytech.parkingcloud.core.mapper.OrganzationMapper.BaseResultMap"></association>
+	</resultMap>
+
+	<select id="selectPage" resultMap="BaseResultMap" resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT * FROM yxy_sales_information
+		LEFT JOIN yxy_organzation
+		ON yxy_organzation.id = yxy_sales_information.org_id
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY yxy_sales_information.id
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap" resultType="com.yxytech.parkingcloud.core.entity.InvoiceInformationRequest">
+		SELECT * FROM yxy_sales_information
+		LEFT JOIN yxy_organzation
+		ON yxy_organzation.id = yxy_sales_information.org_id
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY yxy_sales_information.id
+	</select>
+
+</mapper>

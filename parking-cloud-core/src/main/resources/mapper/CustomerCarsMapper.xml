@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.CustomerCarsMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.CustomerCars">
+		<id column="id" property="id" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="car_type" property="carType" />
+		<result column="created_by" property="createdBy" />
+	</resultMap>
+
+	<resultMap id="JoinResultMap" type="com.yxytech.parkingcloud.core.entity.CustomerCars">
+		<id column="id" property="id" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="car_type" property="carType" />
+		<result column="created_by" property="createdBy" />
+		<association property="bindRelation" column="car_id" javaType="com.yxytech.parkingcloud.core.entity.CustomerBindCars">
+			<result column="user_id" property="userId" />
+			<result column="car_id" property="carId" />
+			<result column="bind_at" property="bindAt" />
+			<result column="unbind_at" property="unbindAt" />
+			<result column="updated_at" property="updatedAt"/>
+			<result column="is_valid" property="isValid" />
+			<result column="is_certification" property="isCertification" />
+			<result column="auth_image_url" property="authImageUrl" />
+			<result column="auth_time" property="authTime" />
+			<result column="status" property="status" />
+		</association>
+	</resultMap>
+
+	<select id="getAllCarsByUserId" resultMap="JoinResultMap" resultType="com.yxytech.parkingcloud.core.entity.CustomerCars">
+		SELECT
+			a.id,
+			a.plate_number,
+			a.plate_color,
+			a.car_type,
+			a.created_by,
+			b.id,
+			b.user_id,
+			b.car_id,
+			b.bind_at,
+			b.unbind_at,
+			b.updated_at,
+			b.is_valid,
+			b.is_certification,
+			b.auth_image_url,
+			b.auth_time,
+			b.status
+		FROM yxy_customer_cars a
+		LEFT JOIN yxy_customer_bind_cars b ON a.id = b.car_id
+		WHERE b.user_id = #{userId} AND b.is_valid is TRUE
+	</select>
+</mapper>

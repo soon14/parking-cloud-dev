@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.OrderParkingInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.OrderParkingInfo">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="parking_address" property="parkingAddress" />
+		<result column="in_parking_port_id" property="inParkingPortId" />
+		<result column="in_parking_port_code" property="inParkingPortCode" />
+		<result column="out_parking_port_id" property="outParkingPortId" />
+		<result column="out_parking_port_code" property="outParkingPortCode" />
+		<result column="in_parking_lane_id" property="inParkingLaneId" />
+		<result column="in_parking_lane_code" property="inParkingLaneCode" />
+		<result column="out_parking_lane_id" property="outParkingLaneId" />
+		<result column="out_parking_lane_code" property="outParkingLaneCode" />
+		<result column="parking_cell_id" property="parkingCellId" />
+		<result column="parking_cell_code" property="parkingCellCode" />
+	</resultMap>
+
+	<select id="getValidOrder" resultType="Long">
+		SELECT order_id FROM yxy_order_parking_info
+			JOIN yxy_order_info ON yxy_order_parking_info.order_id = yxy_order_info.id
+			WHERE yxy_order_parking_info.parking_id = #{parkingId}
+				AND yxy_order_parking_info.parking_cell_id = #{parkingCellId}
+				AND yxy_order_info.is_valid is true
+	</select>
+</mapper>

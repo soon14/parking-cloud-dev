@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.User">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="gender" property="gender" />
+		<result column="birth" property="birth" />
+		<result column="id_type" property="idType" />
+		<result column="id_number" property="idNumber" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_by" property="updatedBy" />
+	</resultMap>
+
+	<select id="selectUsersWithRolesGroups" resultType="com.yxytech.parkingcloud.core.entity.User" parameterType="HashMap">
+		select u.id, u.name
+	    from yxy_user u
+		join yxy_user_account ua
+		on u.id = ua.user_id
+		where ua.org_id = #{orgId}
+
+		<if test="name != null">
+			and u.name = #{name}
+		</if>
+
+		<if test="noRoles == true">
+			and not exists (select id from yxy_user_role ur where ur.user_id = ua.user_id)
+		</if>
+
+		<if test="noGroups == true">
+			and not exists (select id from yxy_user_user_group ug where ug.user_id = ua.user_id)
+		</if>
+
+		<if test="rolesOrGroups == true">
+			and (
+					exists (
+						select id from yxy_user_role ur
+						where ur.user_id = ua.user_id
+						and ur.role_id in
+						<foreach collection="roleIds" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					)
+				or  exists (
+						select id from yxy_user_user_group ug
+						where ug.user_id = ua.user_id
+						and ug.group_id in
+						<foreach collection="groupIds" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					)
+			)
+		</if>
+
+		<if test="rolesOrGroups != true">
+			<if test="roleIds != null and roleIds.size() > 0">
+				and exists (
+					select id from yxy_user_role ur
+					where ur.user_id = ua.user_id
+					and ur.role_id in
+					<foreach collection="roleIds" item="item" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				)
+			</if>
+
+			<if test="groupIds != null and groupIds.size() > 0">
+				and exists (
+					select id from yxy_user_user_group ug
+					where ug.user_id = ua.user_id
+					and ug.group_id in
+					<foreach collection="groupIds" item="item" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				)
+			</if>
+		</if>
+
+	</select>
+
+	<select id="selectPage" resultType="com.yxytech.parkingcloud.core.entity.User">
+		select u.*,
+		org.full_name as orgName
+		from yxy_user u
+		left join yxy_user_account ua on u.id = ua.user_id
+		left join yxy_organzation org on org.id= ua.org_id
+		<where>
+			${ew.sqlSegment}
+			/*org_id:ua.org_id*/
+		</where>
+		order by u.id asc
+	</select>
+
+	<select id="selectUserRoleIds" resultType="java.lang.Long">
+		select ur.role_id
+		from yxy_user_role ur
+		where ur.user_id = #{userId}
+		union
+			select ugr.role_id
+			from yxy_user_user_group ug
+			join yxy_user_group_role ugr
+			on ug.group_id = ugr.group_id
+			where ug.user_id = #{userId}
+	</select>
+
+</mapper>

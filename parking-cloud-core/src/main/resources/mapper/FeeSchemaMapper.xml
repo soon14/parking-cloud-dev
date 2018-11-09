@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.FeeSchemaMapper">
+    <resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.FeeSchema">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="version" property="version"/>
+        <result column="fee_desc" property="feeDesc"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="note" property="note"/>
+    </resultMap>
+
+
+    <select id="getByTime" resultType="com.yxytech.parkingcloud.core.entity.FeeSchema">
+        SELECT f.* from yxy_fee_schema_parking p left join  yxy_fee_schema f on p.fee_schema_id=f.id
+        where p.parking_id=#{parkingId} and ( f.start_time &lt;= #{enterTime} and f.end_time &gt;= #{enterTime}) order by f.version desc
+        limit 1
+    </select>
+
+    <select id="getSchemaPage" parameterType="com.yxytech.parkingcloud.core.entity.FeeSchema" resultMap="BaseResultMap">
+        select * from yxy_fee_schema /*org_id:org_id*/
+        order by
+           yxy_fee_schema.id
+        asc
+    </select>
+
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.yxytech.parkingcloud.core.entity.FeeSchema">
+        insert into yxy_fee_schema
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            "name",
+            start_time,
+            end_time,
+            "version",
+            fee_desc,
+            created_at,
+            created_by,
+            note,
+            org_id
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{name},
+            #{startTime},
+            #{endTime},
+            #{version},
+            #{feeDesc},
+            #{createdAt},
+            #{createdBy},
+            #{note},
+            #{organizationId}
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.yxytech.parkingcloud.core.entity.FeeSchema">
+        update yxy_fee_schema
+        <set>
+            "name" = #{name},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            version = #{version},
+            fee_desc = #{feeDesc},
+            updated_at = #{updatedAt},
+            updated_by = #{updatedBy},
+            note = #{note}
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="bind">
+        insert into yxy_fee_schema_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fee_schema_id,
+            fee_rule_id
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{schemaId},
+            #{ruleId}
+        </trim>
+    </insert>
+    <insert id="bindParking">
+        insert into yxy_fee_schema_parking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fee_schema_id,
+            parking_id
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{schemaId},
+            #{parkingId}
+        </trim>
+    </insert>
+    <delete id="unbind">
+        delete from yxy_fee_schema_rule where fee_schema_id=#{schemaId}
+    </delete><delete id="unbindParking">
+        delete from yxy_fee_schema_parking where fee_schema_id=#{schemaId}
+    </delete>
+
+    <select id="isRuleExist" resultType="java.lang.Long">
+        SELECT x.id from yxy_fee_schema_rule x
+        where x.fee_schema_id=#{schemaId} and x.fee_rule_id = #{ruleId}
+    </select>
+    <select id="maxVersion" resultType="java.lang.Long">
+        SELECT max(x.version) from yxy_fee_schema x
+    </select>
+
+    <select id="getRateRulesBySchemaId" resultMap="com.yxytech.parkingcloud.core.mapper.FeeRateRuleMapper.BaseResultMap" resultType="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+        SELECT * from yxy_fee_rate_rule where id in (select fee_rule_id from yxy_fee_schema_rule where fee_schema_id in (
+            <foreach collection="list" item="item" separator=",">
+                #{item}
+            </foreach>
+        ))
+    </select>
+
+</mapper>

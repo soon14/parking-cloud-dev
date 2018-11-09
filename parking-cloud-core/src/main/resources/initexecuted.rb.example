@@ -1,0 +1,5 @@
+#创建保存执行过的表的表
+require 'pg'
+conn = PG.connect(dbname: 'new_postgres',host: '127.0.0.1', port: 5432, user: 'postgres', password: '123456')
+conn.exec("CREATE TABLE exectued_table(id serial, name VARCHAR(200), symbol VARCHAR(200))")
+print "初始化表成功"

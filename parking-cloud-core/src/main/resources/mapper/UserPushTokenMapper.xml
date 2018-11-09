@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.UserPushTokenMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.UserPushToken">
+		<result column="push_token" property="pushToken" />
+		<result column="user_id" property="userId" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="in_use" property="inUse" />
+		<result column="used_time" property="usedTime" />
+		<result column="unused_time" property="unusedTime" />
+		<result column="id" property="id" />
+	</resultMap>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ChargeFacilityMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.ChargeFacility">
+		<id column="id" property="id" />
+		<result column="system_number" property="systemNumber" />
+		<result column="sn" property="sn" />
+		<result column="put_in_at" property="putInAt" />
+		<result column="put_out_at" property="putOutAt" />
+		<result column="startusing_at" property="startusingAt" />
+		<result column="fac_org_id" property="facOrgId" />
+		<result column="ip" property="ip" />
+		<result column="imei" property="imei" />
+		<result column="manage_org_id" property="manageOrgId" />
+		<result column="manager" property="manager" />
+		<result column="parking_id" property="parkingId" />
+		<result column="remarks" property="remarks" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<select id="selectByPage" resultType="com.yxytech.parkingcloud.core.entity.ChargeFacility">
+      select cf.*,
+             org1.full_name as manageOrgName,
+             org2.full_name as facOrgName,
+		     p.full_name as ParkingName
+       from yxy_charge_facility cf
+       left join yxy_organzation org1 on cf.manage_org_id = org1.id
+       left join yxy_organzation org2 on cf.fac_org_id = org2.id
+       left join yxy_parking p on cf.parking_id = p.id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:cf.parking_id*/
+		</where>
+		order by cf.id asc
+	</select>
+
+</mapper>

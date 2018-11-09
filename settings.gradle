@@ -1,0 +1,14 @@
+
+rootProject.name = 'parking-cloud'
+
+
+
+include 'parking-cloud-core'
+include 'parking-cloud-platform'
+include 'parking-cloud-security'
+include 'parking-cloud-commons'
+include 'parking-cloud-app'
+include 'parking-cloud-grpc'
+include 'parking-cloud-log'
+include 'umeng-push'
+

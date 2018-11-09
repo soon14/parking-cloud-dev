@@ -1,0 +1,1 @@
+ALTER TABLE yxy_sales_information RENAME COLUMN organization_id to org_id;

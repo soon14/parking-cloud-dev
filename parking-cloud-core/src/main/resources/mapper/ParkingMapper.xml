@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ParkingMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Parking">
+	<result column="id" property="id" />
+	<result column="code" property="code" />
+	<result column="full_name" property="fullName" />
+	<result column="short_name" property="shortName" />
+	<result column="road_type" property="roadType" />
+	<result column="open_type" property="openType" />
+	<result column="fee_type" property="feeType" />
+	<result column="layers" property="layers" />
+	<result column="underground_layers" property="undergroundLayers" />
+	<result column="overground_layers" property="overgroundLayers" />
+	<result column="business_number" property="businessNumber" />
+	<result column="charge_licence" property="chargeLicence" />
+	<result column="approve_status" property="approveStatus" />
+	<result column="owner_org_id" property="ownerOrgId" />
+	<result column="operator_org_id" property="operatorOrgId" />
+	<result column="regulatory_id" property="regulatoryId" />
+	<result column="principal" property="principal" />
+	<result column="phone_number" property="phoneNumber" />
+	<result column="email" property="email" />
+	<result column="address" property="address" />
+	<result column="gps" property="gps" />
+	<result column="parking_cells" property="parkingCells" />
+	<result column="business_hours_desc" property="businessHoursDesc" />
+	<result column="all_day" property="allDay" />
+	<result column="start_time" property="startTime" />
+	<result column="end_time" property="endTime" />
+	<result column="rates" property="rates" />
+	<result column="street_area_id" property="streetAreaId" />
+	<result column="prove_images" property="proveImages" />
+	<result column="manage_prove" property="manageProve" />
+	<result column="parking_cell_map" property="parkingCellMap" />
+	<result column="created_by" property="createdBy" />
+	<result column="created_at" property="createdAt" />
+	<result column="updated_by" property="updatedBy" />
+	<result column="updated_at" property="updatedAt" />
+	<result column="is_using" property="isUsing"/>
+</resultMap>
+
+	<resultMap id="gpsResultMap" type="com.yxytech.parkingcloud.core.entity.ParkingInfoForApp">
+		<result column="id" property="id" />
+		<result column="full_name" property="parkingFullName" />
+		<result column="short_name" property="parkingName" />
+		<result column="longitude" property="longitude" />
+		<result column="latitude" property="latitude" />
+		<result column="distance" property="distance" />
+        <result column="parking_cells" property="parkingCells" />
+	</resultMap>
+
+	<resultMap id="joinOrder" type="com.yxytech.parkingcloud.core.entity.Parking">
+		<result column="id" property="id" />
+		<result column="full_name" property="fullName" />
+		<result column="parking_cells" property="parkingCells" />
+		<result column="is_using" property="isUsing" />
+		<collection ofType="com.yxytech.parkingcloud.core.entity.OrderInfo" property="orderInfos">
+			<result column="orderId" property="id" />
+			<result column="parking_id" property="parkingId" />
+			<result column="parking_name" property="parkingName" />
+			<result column="total_amount" property="totalAmount" />
+			<result column="receivable_amount" property="receivableAmount" />
+			<result column="free_amount" property="freeAmount" />
+			<result column="prepaid_amount" property="prepaidAmount" />
+			<result column="paid_amount" property="paidAmount" />
+			<result column="invoice_amount" property="invoiceAmount" />
+			<result column="enter_at" property="enterAt" />
+			<result column="leave_at" property="leaveAt" />
+			<result column="duration" property="duration" />
+			<result column="status" property="status" />
+			<result column="car_status" property="carStatus" />
+		</collection>
+	</resultMap>
+
+	<resultMap id="joinTransaction" type="com.yxytech.parkingcloud.core.entity.Parking">
+		<result column="id" property="id" />
+		<result column="full_name" property="fullName" />
+		<result column="parking_cells" property="parkingCells" />
+		<result column="is_using" property="isUsing" />
+		<collection ofType="com.yxytech.parkingcloud.core.entity.OrderTransaction" property="orderTransactions">
+			<result column="transactionId" property="uuid" />
+			<result column="amount" property="amount" />
+			<result column="order_number" property="orderNumber" />
+			<result column="user_id" property="userId" />
+			<result column="plate_number" property="plateNumber" />
+			<result column="plate_color" property="plateColor" />
+			<result column="pay_way" property="payWay" />
+			<result column="pay_method" property="payMethod" />
+			<result column="finished_at" property="finishedAt" />
+		</collection>
+	</resultMap>
+
+	<insert id="createParking" parameterType="com.yxytech.parkingcloud.core.entity.Parking">
+		insert into yxy_parking
+		(code,full_name,short_name,road_type,open_type,fee_type,layers,underground_layers,
+		overground_layers,business_number,charge_licence,owner_org_id,operator_org_id,
+		principal,phone_number,email,address,is_using,gps,parking_cells,business_hours_desc,all_day,start_time,end_time,rates,street_area_id,
+		prove_images,manage_prove,parking_cell_map,created_by,created_at,updated_by,updated_at)
+		values
+		(#{code},#{fullName},#{shortName},
+		#{roadType},#{openType},#{feeType},#{layers},#{undergroundLayers},#{overgroundLayers},#{businessNumber},#{chargeLicence},
+		#{ownerOrgId},#{operatorOrgId},#{principal},#{phoneNumber},#{email},#{address},#{isUsing},'(${gps})',
+		#{parkingCells},#{businessHoursDesc},#{allDay},#{startTime},#{endTime},#{rates},#{streetAreaId},#{proveImages},#{manageProve},
+		#{parkingCellMap},#{createdBy},#{createdAt},#{updatedBy},#{updatedAt})
+	</insert>
+
+	<update id="update" parameterType="com.yxytech.parkingcloud.core.entity.Parking">
+		update yxy_parking
+		<set>
+			<if test="code != null">code=#{code},</if>
+			<if test="fullName != null">full_name=#{fullName},</if>
+			<if test="shortName != null">short_name=#{shortName},</if>
+			<if test="roadType != null">road_type=#{roadType},</if>
+			<if test="openType != null">open_type=#{openType},</if>
+			<if test="feeType != null">fee_type=#{feeType},</if>
+			<if test="layers != null">layers=#{layers},</if>
+			<if test="undergroundLayers != null">underground_layers=#{undergroundLayers},</if>
+			<if test="overgroundLayers != null">overground_layers=#{overgroundLayers},</if>
+			<if test="businessNumber != null">business_number=#{businessNumber},</if>
+			<if test="chargeLicence != null">charge_licence=#{chargeLicence},</if>
+			<if test="approveStatus != null">approve_status=#{approveStatus},</if>
+			<if test="ownerOrgId != null">owner_org_id=#{ownerOrgId},</if>
+			<if test="operatorOrgId != null">operator_org_id=#{operatorOrgId},</if>
+			<if test="principal != null">principal=#{principal},</if>
+			<if test="phoneNumber != null">phone_number=#{phoneNumber},</if>
+			<if test="email != null">email=#{email},</if>
+			<if test="address != null">address=#{address},</if>
+			<if test="isUsing != null">is_using=#{isUsing},</if>
+			<if test="gps != null">gps='(${gps})',</if>
+			<if test="parkingCells != null">parking_cells=#{parkingCells},</if>
+			<if test="businessHoursDesc != null">business_hours_desc=#{businessHoursDesc},</if>
+			<if test="allDay != null">all_day=#{allDay},</if>
+			<if test="startTime != null">start_time=#{startTime},</if>
+			<if test="endTime != null">end_time=#{endTime},</if>
+			<if test="rates != null">rates=#{rates},</if>
+			<if test="streetAreaId != null">street_area_id=#{streetAreaId},</if>
+			<if test="proveImages != null">prove_images=#{proveImages},</if>
+			<if test="manageProve != null">manage_prove=#{manageProve},</if>
+			<if test="parkingCellMap != null">parking_cell_map=#{parkingCellMap},</if>
+			<if test="createdBy != null">created_by=#{createdBy},</if>
+			<if test="createdAt != null">created_at=#{createdAt},</if>
+			<if test="updatedBy != null">updated_by=#{updatedBy},</if>
+			<if test="updatedAt != null">updated_at=#{updatedAt}</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update yxy_parking
+			<set>
+				<if test="item.code != null">code=#{item.code},</if>
+				<if test="item.fullName != null">full_name=#{item.fullName},</if>
+				<if test="item.shortName != null">short_name=#{item.shortName},</if>
+				<if test="item.roadType != null">road_type=#{item.roadType},</if>
+				<if test="item.openType != null">open_type=#{item.openType},</if>
+				<if test="item.feeType != null">fee_type=#{item.feeType},</if>
+				<if test="item.layers != null">layers=#{item.layers},</if>
+				<if test="item.undergroundLayers != null">underground_layers=#{item.undergroundLayers},</if>
+				<if test="item.overgroundLayers != null">overground_layers=#{item.overgroundLayers},</if>
+				<if test="item.businessNumber != null">business_number=#{item.businessNumber},</if>
+				<if test="item.chargeLicence != null">charge_licence=#{item.chargeLicence},</if>
+				<if test="item.approveStatus != null">approve_status=#{item.approveStatus},</if>
+				<if test="item.ownerOrgId != null">owner_org_id=#{item.ownerOrgId},</if>
+				<if test="item.operatorOrgId != null">operator_org_id=#{item.operatorOrgId},</if>
+				<if test="item.principal != null">principal=#{item.principal},</if>
+				<if test="item.phoneNumber != null">phone_number=#{item.phoneNumber},</if>
+				<if test="item.email != null">email=#{item.email},</if>
+				<if test="item.address != null">address=#{item.address},</if>
+				<if test="item.using != null">is_using=#{item.using},</if>
+				<if test="item.gps != null">gps='(${item.gps})',</if>
+				<if test="item.parkingCells != null">parking_cells=#{item.parkingCells},</if>
+				<if test="item.businessHoursDesc != null">business_hours_desc=#{item.businessHoursDesc},</if>
+				<if test="item.allDay != null">all_day=#{item.allDay},</if>
+				<if test="item.startTime != null">start_time=#{item.startTime},</if>
+				<if test="item.endTime != null">end_time=#{item.endTime},</if>
+				<if test="item.rates != null">rates=#{item.rates},</if>
+				<if test="item.streetAreaId != null">street_area_id=#{item.streetAreaId},</if>
+				<if test="item.proveImages != null">prove_images=#{item.proveImages},</if>
+				<if test="item.manageProve != null">manage_prove=#{item.manageProve},</if>
+				<if test="item.parkingCellMap != null">parking_cell_map=#{item.parkingCellMap},</if>
+				<if test="item.createdBy != null">created_by=#{item.createdBy},</if>
+				<if test="item.createdAt != null">created_at=#{item.createdAt},</if>
+				<if test="item.updatedBy != null">updated_by=#{item.updatedBy},</if>
+				<if test="item.updatedAt != null">updated_at=#{item.updatedAt}</if>
+			</set>
+			where id=#{item.id}
+		</foreach>
+	</update>
+
+	<select id="getAllNear" resultMap="gpsResultMap" resultType="com.yxytech.parkingcloud.core.entity.ParkingInfoForApp">
+		SELECT id, full_name, short_name, gps[0] as longitude, gps[1] as latitude, parking_cells,
+		ST_Length(Geography('LINESTRING(${longitude} ${latitude}, '|| gps[0] || ' ' || gps[1] ||')')) as distance
+		from yxy_parking WHERE is_using is TRUE AND gps &lt;@ circle'((${longitude}, ${latitude}), ${radius})'
+        ORDER BY distance ASC
+	</select>
+
+	<select id="getParkingInfo" resultType="com.yxytech.parkingcloud.core.entity.Parking">
+		SELECT yxy_parking.*, yxy_parking.gps[0] AS longitude, yxy_parking.gps[1] AS latitude, yxy_parking_cell_use.using_number AS usedCell FROM yxy_parking
+		LEFT JOIN yxy_parking_cell_use
+		ON yxy_parking.id = yxy_parking_cell_use.parking_id
+		WHERE yxy_parking.id = #{id}
+	</select>
+
+	<select id="selectByPage" resultType="com.yxytech.parkingcloud.core.entity.Parking">
+		select p.*,
+		a.name as streetAreaName,
+		o1.full_name as operatorOrgName,
+		o2.full_name as ownerOrgName,
+		o3.full_name as regulatoryName
+		from yxy_parking p
+		left join yxy_area a on a.id = p.street_area_id
+		left join yxy_organzation o1 on o1.id=p.operator_org_id
+		left join yxy_organzation o2 on o2.id=p.owner_org_id
+		left join yxy_organzation o3 on o3.id=p.regulatory_id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:p.id*/
+		</where>
+		order by p.id asc
+	</select>
+
+	<select id="customSelectOrderList" resultMap="joinOrder" resultType="com.yxytech.parkingcloud.core.entity.Parking">
+		SELECT *, yxy_order_info.id as orderId FROM yxy_parking
+		LEFT JOIN yxy_order_info
+		ON yxy_order_info.parking_id = yxy_parking.id ${ew.sqlSegment}
+		WHERE yxy_parking.is_using IS TRUE
+		ORDER BY yxy_order_info.parking_id
+	</select>
+
+	<select id="customSelectTransactionList" resultMap="joinTransaction" resultType="com.yxytech.parkingcloud.core.entity.Parking">
+		SELECT yxy_parking.*, yxy_order_transaction.*, yxy_order_transaction.id as transactionId FROM yxy_parking
+		LEFT JOIN yxy_order_info ON yxy_parking.id = yxy_order_info.parking_id
+		LEFT JOIN yxy_order_transaction
+		ON yxy_order_info.id = yxy_order_transaction.order_id ${ew.sqlSegment}
+		WHERE yxy_parking.is_using IS TRUE
+		ORDER BY yxy_order_info.parking_id
+	</select>
+
+	<select id="findAll" parameterType="string"  resultType="com.yxytech.parkingcloud.core.entity.Parking">
+		select id,full_name from yxy_parking where full_name like  CONCAT(CONCAT('%', #{parking}), '%')
+		/*parking_id:id*/
+		limit 20
+	</select>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.OrganzationMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Organization">
+		<result column="id" property="id" />
+		<result column="org_nature" property="orgNature" />
+		<result column="full_name" property="fullName" />
+		<result column="short_name" property="shortName" />
+		<result column="register_address" property="registerAddress" />
+		<result column="legal_represent_ative" property="legalRepresentAtive" />
+		<result column="taxpayer_number" property="taxpayerNumber" />
+		<result column="phone_number" property="phoneNumber" />
+		<result column="email" property="email" />
+		<result column="org_number" property="orgNumber" />
+		<result column="registration_number" property="registrationNumber" />
+		<result column="approve_status" property="approveStatus" />
+		<result column="is_property_org" property="isPropertyOrg" />
+		<result column="is_manage_org" property="isManageOrg" />
+		<result column="is_facility_org" property="isFacilityOrg" />
+		<result column="is_regulatory" property="isRegulatory" />
+		<result column="created_by" property="createdBy" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_by" property="updatedBy" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="is_valid" property="isValid" />
+		<result column="area_id" property="areaId" />
+		<result column="org_number_certificate" property="orgNumberCertificate"/>
+	</resultMap>
+
+	<select id="selectByPage" resultType="com.yxytech.parkingcloud.core.entity.Organization">
+		select org.*,
+		a.name as areaName
+		from yxy_organzation org
+		left join yxy_area a on a.id = org.area_id
+		<where>
+			${ew.sqlSegment}
+			/*org_id:org.id*/
+		</where>
+		order by org.id asc
+	</select>
+
+	<select id="findAllOwnerOrg" parameterType="string"  resultType="com.yxytech.parkingcloud.core.entity.Organization">
+		select id,full_name from yxy_organzation where full_name like  CONCAT(CONCAT('%', #{ownerOrg}), '%')
+		/*org_id:id*/
+		limit 20
+	</select>
+
+	<select id="findAllManageOrg" parameterType="string"  resultType="com.yxytech.parkingcloud.core.entity.Organization">
+		select id,full_name from yxy_organzation where full_name like  CONCAT(CONCAT('%', #{manageOrg}), '%')
+		/*org_id:id*/
+		limit 20
+	</select>
+
+	<select id="findAllFacilityOrg" parameterType="string"  resultType="com.yxytech.parkingcloud.core.entity.Organization">
+		select id,full_name from yxy_organzation where full_name like  CONCAT(CONCAT('%', #{facilityOrg}), '%')
+		/*org_id:id*/
+		limit 20
+	</select>
+
+</mapper>

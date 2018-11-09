@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.InvoiceInformationResultMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.InvoiceInformationResult">
+		<id column="id" property="id" />
+		<result column="invoice_id" property="invoiceId" />
+		<result column="invoice_flow_number" property="invoiceFlowNumber" />
+		<result column="bill_date" property="billDate" />
+		<result column="invocie_code" property="invocieCode" />
+		<result column="invoice_number" property="invoiceNumber" />
+		<result column="platform_invoice_url" property="platformInvoiceUrl" />
+		<result column="tax_invoice_url" property="taxInvoiceUrl" />
+		<result column="cloud_platform_invoice_url" property="cloudPlatformInvoiceUrl" />
+		<result column="cloud_platform_invoice_image" property="cloudPlatformInvoiceImage" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+	</resultMap>
+
+</mapper>

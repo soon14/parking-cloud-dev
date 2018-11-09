@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fwpackage>
+    <jsnr><fwdm>$salesInformation.searchServiceCode</fwdm>
+    <nsrsbh>$salesInformation.taxpayerIdentificationNumber</nsrsbh>
+        <kpqd>0</kpqd></jsnr><ywnr><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+    <request>
+        <fpqqlsh>$invoiceInformationRequest.invoiceFlowNumber</fpqqlsh>
+        <nsrsbh>$salesInformation.taxpayerIdentificationNumber</nsrsbh>
+    </request>]]></ywnr></fwpackage>

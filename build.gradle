@@ -1,0 +1,21 @@
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+
+        mavenLocal()
+    }
+
+    ext {
+        springBootVersion = '1.5.7.RELEASE'
+    }
+}
+

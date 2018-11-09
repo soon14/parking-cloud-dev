@@ -1,0 +1,1 @@
+ALTER TABLE yxy_fee_festival ADD org_id bigint;

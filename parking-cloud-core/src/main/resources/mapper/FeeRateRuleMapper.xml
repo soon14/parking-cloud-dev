@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.FeeRateRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+        <id column="id" property="id"/>
+        <result column="vehicle_type" property="vehicleType" javaType="com.yxytech.parkingcloud.core.enums.CarTypeEnum" typeHandler="com.yxytech.parkingcloud.core.utils.EnumTypeHandler" />
+        <result column="desc" property="desc"/>
+        <result column="on_festival" property="onFestival"/>
+        <result column="on_mon" property="onMon"/>
+        <result column="on_tue" property="onTue"/>
+        <result column="on_wed" property="onWed"/>
+        <result column="on_thu" property="onThu"/>
+        <result column="on_fri" property="onFri"/>
+        <result column="on_sat" property="onSat"/>
+        <result column="on_sun" property="onSun"/>
+        <result column="free_in_duration" property="freeInDuration"/>
+        <result column="free_out_duration" property="freeOutDuration"/>
+        <result column="is_valid" property="isValid"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="note" property="note"/>
+        <result column="type" property="type" typeHandler="com.yxytech.parkingcloud.core.utils.EnumTypeHandler"/>
+        <result column="is_cycled" property="isCycled"/>
+        <result column="cycle_type" property="cycleType" typeHandler="com.yxytech.parkingcloud.core.utils.EnumTypeHandler" />
+        <result column="cycle_start" property="cycleStart"/>
+        <result column="cycle_fee_type" property="cycleFeeType" typeHandler="com.yxytech.parkingcloud.core.utils.EnumTypeHandler" />
+        <result column="max_fee" property="maxFee"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+		vehicle_type,"desc",
+		on_festival ,on_mon,on_tue,on_wed,on_thu,on_fri,on_sat,on_sun,
+		free_in_duration,free_out_duration,is_valid,"type",is_cycled,cycle_type,cycle_start,cycle_fee_type,max_fee,
+		created_at,created_by,note,org_id
+	</sql>
+    <sql id="baseField">
+		#{vehicleType},
+		#{desc},
+		#{onFestival},
+		#{onMon},
+		#{onTue},
+		#{onWed},
+		#{onThu},
+		#{onFri},
+		#{onSat},
+		#{onSun},
+		#{freeInDuration},
+		#{freeOutDuration},
+		#{isValid},
+		#{type},
+        #{isCycled},
+        #{cycleType},
+        #{cycleStart},
+        #{cycleFeeType},
+        #{maxFee},
+		#{createdAt},
+		#{createdBy},
+		#{note},
+        #{organizationId}
+	</sql>
+
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+		select r.* from yxy_fee_rate_rule r where r.id = #{id}
+	</select>
+
+    <select id="findByVehicleDate" resultMap="BaseResultMap">
+		select r.* from yxy_fee_schema_rule s left join yxy_fee_rate_rule r on s.fee_rule_id=r.id where s.fee_schema_id=#{schemaId} and r.vehicle_type=#{vehicle} and ${daySql}
+	</select>
+    <select id="findByVehicle" resultMap="BaseResultMap" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+		select r.* from yxy_fee_schema_rule s left join yxy_fee_rate_rule r on s.fee_rule_id=r.id where s.fee_schema_id=#{schemaId} and r.vehicle_type=#{vehicleType} order by r.on_festival desc
+	</select>
+
+    <select id="getFeeRuleRatePage" resultMap="BaseResultMap">
+		select * from  yxy_fee_rate_rule <where>${ew.sqlSegment}</where> /*org_id:org_id*/ order by yxy_fee_rate_rule.id asc
+	</select>
+
+
+    <select id="getFeeRuleList" resultMap="BaseResultMap" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+		select
+		l.*
+		from
+		yxy_fee_rate_rule l left outer join yxy_fee_schema_rule sr on l.id=sr.fee_rule_id
+
+	</select><select id="getBindFeeRuleList" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		l.*
+		from
+		yxy_fee_rate_rule l left outer join yxy_fee_schema_rule sr on l.id=sr.fee_rule_id where sr.fee_schema_id=#{schemaId}
+
+	</select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+
+        insert into yxy_fee_rate_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="Base_Column"/>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <include refid="baseField"/>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateRule">
+        update yxy_fee_rate_rule
+        <set>
+            vehicle_type = #{vehicleType},
+            "desc" = #{desc},
+            on_festival = #{onFestival},
+            on_mon = #{onMon},
+            on_tue = #{onTue},
+            on_wed = #{onWed},
+            on_thu = #{onThu},
+            on_fri = #{onFri},
+            on_sat = #{onSat},
+            on_sun = #{onSun},
+            free_in_duration = #{freeInDuration},
+            free_out_duration = #{freeOutDuration},
+            is_valid = #{isValid},
+            "type" = #{type},
+            is_cycled = #{isCycled},
+            cycle_type = #{cycleType},
+            cycle_start = #{cycleStart},
+            cycle_fee_type = #{cycleFeeType},
+            max_fee = #{maxFee},
+            updated_at = #{updatedAt},
+            updated_by = #{updatedBy},
+            note = #{note}
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

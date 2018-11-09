@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.UserAccountMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.UserAccount">
+		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="user_id" property="userId" />
+		<result column="employee_number" property="employeeNumber" />
+		<result column="mobile" property="mobile" />
+		<result column="email" property="email" />
+		<result column="password" property="password" />
+		<result column="is_active" property="isActive" />
+		<result column="last_login_at" property="lastLoginAt" />
+		<result column="register_ip" property="registerIp" />
+		<result column="last_login_ip" property="lastLoginIp" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_by" property="updatedBy" />
+	</resultMap>
+
+	<select id="getUserByUserIdentity" resultType="com.yxytech.parkingcloud.core.entity.UserAccount">
+		select a.id, a.mobile, a.email, a.employee_number, a.password, a.user_id
+		from yxy_user_account a
+	    join yxy_organzation b
+		on a.org_id = b.id
+		and b.full_name = #{orgName}
+		where a.mobile = #{username}
+		or a.email = #{username}
+		or a.employee_number = #{username}
+	</select>
+
+</mapper>

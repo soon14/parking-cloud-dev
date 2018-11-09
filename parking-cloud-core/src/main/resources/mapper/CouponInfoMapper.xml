@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.CouponInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.CouponInfo">
+		<id column="id" property="id" />
+		<result column="coupon_unique" property="couponUnique" />
+		<result column="org_id" property="organizationId" />
+		<result column="parking_id" property="parkingId" />
+		<result column="started_at" property="startedAt" />
+		<result column="end_at" property="endAt" />
+		<result column="time_interval_start" property="timeIntervalStart" />
+		<result column="time_interval_end" property="timeIntervalEnd" />
+		<result column="can_superposed" property="canSuperposed" />
+		<result column="max_of_superposed" property="maxOfSuperposed" />
+		<result column="can_use_with_whitelist" property="canUseWithWhitelist" />
+		<result column="min_use_money" property="minUseMoney" />
+		<result column="max_superposed_money" property="maxSuperposedMoney" />
+		<result column="coupon_type" property="couponType" />
+		<result column="created_at" property="createdAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="updated_by" property="updatedBy" />
+		<result column="is_valid" property="isValid" />
+		<result column="describe" property="describe" />
+		<result column="coupon_info" property="couponInfo" />
+	</resultMap>
+
+	<resultMap id="join" type="com.yxytech.parkingcloud.core.entity.CouponInfo">
+		<result column="id" property="id" />
+		<result column="coupon_unique" property="couponUnique" />
+		<result column="org_id" property="organizationId" />
+		<result column="parking_id" property="parkingId" />
+		<result column="started_at" property="startedAt" />
+		<result column="end_at" property="endAt" />
+		<result column="time_interval_start" property="timeIntervalStart" />
+		<result column="time_interval_end" property="timeIntervalEnd" />
+		<result column="can_superposed" property="canSuperposed" />
+		<result column="max_of_superposed" property="maxOfSuperposed" />
+		<result column="can_use_with_whitelist" property="canUseWithWhitelist" />
+		<result column="min_use_money" property="minUseMoney" />
+		<result column="max_superposed_money" property="maxSuperposedMoney" />
+		<result column="coupon_type" property="couponType" />
+		<result column="created_at" property="createdAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="updated_by" property="updatedBy" />
+		<result column="is_valid" property="isValid" />
+		<result column="describe" property="describe" />
+		<result column="coupon_info" property="couponInfo" />
+		<association property="promoCode" resultMap="com.yxytech.parkingcloud.core.mapper.PromoCodeMapper.BaseResultMap"/>
+	</resultMap>
+
+    <select id="selectByPromoCode" resultMap="join" resultType="com.yxytech.parkingcloud.core.entity.CouponInfo">
+		SELECT
+			yxy_promo_code.id AS id,
+			yxy_coupon_info.coupon_unique,
+			yxy_coupon_info.parking_id,
+			yxy_coupon_info.started_at,
+			yxy_coupon_info.end_at,
+			yxy_coupon_info.can_superposed,
+			yxy_coupon_info.max_of_superposed,
+			yxy_coupon_info.min_use_money,
+			yxy_coupon_info.coupon_unique,
+			yxy_coupon_info.coupon_type,
+			yxy_coupon_info.max_superposed_money,
+			yxy_coupon_info.can_use_with_whitelist,
+			yxy_promo_code.*
+		FROM yxy_coupon_info JOIN yxy_promo_code ON yxy_coupon_info.id = yxy_promo_code.coupon_id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:yxy_coupon_info.parking_id*/
+		</where>
+	</select>
+
+</mapper>

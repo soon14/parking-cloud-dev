@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.OrderInvoiceMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.OrderInvoice">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="invoice_id" property="invoiceId" />
+		<result column="invoice_amout" property="invoiceAmout" />
+		<result column="whether_invoice" property="whetherInvoice" />
+		<result column="whether_together" property="whetherTogether" />
+	</resultMap>
+
+</mapper>

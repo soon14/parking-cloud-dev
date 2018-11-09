@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.CustomerMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Customer">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="gender" property="gender" />
+		<result column="birth" property="birth" />
+		<result column="avatar" property="avatar" />
+		<result column="nickname" property="nickname" />
+		<result column="driving_license_image" property="drivingLicenseImage" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+	</resultMap>
+	<resultMap type="com.yxytech.parkingcloud.core.entity.Customer" id="customerResultMap">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="nickname" column="nickname"/>
+		<result property="avatar" column="avatar"/>
+		<result property="gender" column="gender"/>
+		<result property="birth" column="birth"/>
+	</resultMap>
+	<select id="findCustomerInfo" parameterType="long" resultMap="customerResultMap">
+	   select yc.id,yc.name,yc.nickname,yc.avatar,yc.gender,yc.birth,yc.account_id,yca.id,yca.mobile,yca.email from yxy_customer yc, yxy_customer_account yca where yc.account_id=yca.id and yc.id=#{id}
+     </select>
+</mapper>

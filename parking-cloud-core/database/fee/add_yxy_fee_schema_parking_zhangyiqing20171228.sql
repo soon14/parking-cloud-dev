@@ -1,0 +1,1 @@
+ALTER TABLE yxy_fee_schema_parking ADD org_id bigint;

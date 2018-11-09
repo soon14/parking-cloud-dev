@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.EtcHistoryMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.EtcHistory">
+		<id column="id" property="id" />
+		<result column="etc_number" property="etcNumber" />
+		<result column="etc_net_id" property="etcNetId" />
+		<result column="etc_version" property="version" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.yxytech.parkingcloud.core.entity.EtcHistory">
+		INSERT INTO yxy_etc_history (etc_net_id, etc_number, etc_version)
+			VALUES (#{etcNetId}, #{etcNumber}, ARRAY[#{version}])
+	</insert>
+
+	<insert id="insertBatch">
+		<foreach collection="list" item="item" separator=";">
+			INSERT INTO yxy_etc_history (etc_number, etc_net_id, etc_version)
+			VALUES (#{item.etcNumber}, #{item.etcNetId}, '[${item.version}]'::jsonb)
+			ON CONFLICT(etc_number, etc_net_id) DO UPDATE SET etc_version =
+			yxy_etc_history.etc_version || '[${item.version}]'::jsonb
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.yxytech.parkingcloud.core.entity.EtcHistory">
+		UPDATE yxy_etc_history SET etc_version =
+			array_append(yxy_etc_history.etc_version, #{item.version})
+			WHERE etc_number = #{etcNumber} AND etc_net_id = #{etcNetId}
+	</update>
+
+	<update id="updateBatch">
+		UPDATE yxy_etc_history SET version = version || '[${version}]'::jsonb WHERE id in
+		<foreach collection="etcHistoryList" item="item" open="(" close=")" separator=",">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<select id="getAllByVersion" resultType="com.yxytech.parkingcloud.core.entity.EtcHistory">
+		SELECT etc_number, etc_net_id FROM yxy_etc_history
+		<if test = " _parameter!=null ">
+			WHERE version @> '[${_parameter}]'::jsonb
+		</if>
+		order by yxy_etc_history.id asc
+	</select>
+
+	<select id="getOne" resultType="com.yxytech.parkingcloud.core.entity.EtcHistory">
+		SELECT etc_number, etc_net_id, version FROM yxy_etc_history
+			WHERE etc_number = #{etcNumber} AND etc_net_id = #{etcNetId}
+	</select>
+
+	<select id="getAllExistId" resultType="com.yxytech.parkingcloud.core.entity.EtcHistory">
+		SELECT id, etc_number, etc_net_id FROM yxy_etc_history WHERE etc_number in
+		<foreach collection="list" item="item" open="(" close=")"
+				 separator=",">
+			#{item.etcNumber}
+		</foreach>
+	</select>
+
+	<select id="getAllVersion" resultType="java.lang.String">
+		SELECT etc_version FROM yxy_etc_history WHERE etc_number = #{etcNumber}
+	</select>
+
+
+</mapper>

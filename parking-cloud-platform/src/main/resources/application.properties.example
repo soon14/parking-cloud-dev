@@ -1,0 +1,91 @@
+server.port= 8082
+server.env=DEV
+server.address= 0.0.0.0
+server.context-path=/platform
+
+spring.datasource.driver-class-name= org.postgresql.Driver
+spring.datasource.url= jdbc:postgresql://localhost:5432/parkingcloud_dev
+spring.datasource.username= sandect
+spring.datasource.password= 111111
+
+# mybatis
+mybatis-plus.mapper-locations= classpath:mapper/*Mapper.xml
+#实体扫描，多个package用逗号或者分号分隔
+mybatis-plus.typeAliasesPackage= com.yxytech.parkingcloud.core.entity
+mybatis-plus.typeEnumsPackage= com.yxytech.parkingcloud.core.enums
+#主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+mybatis-plus.global-config.id-type= 0
+#字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+mybatis-plus.global-config.field-strategy= 2
+#驼峰下划线转换
+mybatis-plus.global-config.db-column-underline= true
+#刷新mapper 调试神器
+mybatis-plus.global-config.refresh-mapper= true
+mybatis-plus.configuration.map-underscore-to-camel-case= true
+mybatis-plus.configuration.cache-enabled= false
+# 自动填充公用字段（createdAt, updatedAt)
+mybatis-plus.global-config.meta-object-handler=com.yxytech.parkingcloud.core.config.YXYMetaObjectHandler
+
+# 分钟，30天
+yxytech.security.jwt.tokenExpirationTime=43200
+# 分钟，31天
+yxytech.security.jwt.refreshTokenExpTime=44640
+
+yxytech.security.jwt.tokenIssuer=http://www.yxytech.com
+yxytech.security.jwt.tokenSigningKey=xm8EV6Hy5RMFK4EEACIDAwQus
+yxytech.security.jwt.tokenHeaderParam=X-Authorization
+
+security.userservice=com.yxytech.parkingcloud.core.service.impl.UserAccountServiceImpl
+
+# 上传目录
+parkingcloud.upload-path: /Users/sandect/work/yxytech/parking-cloud/upload
+# 上传临时目录
+parkingcloud.upload-tmp-path: /Users/sandect/work/yxytech/parking-cloud/upload/tmp
+# 上传访问路径前缀
+parkingcloud.upload-context: /upload
+
+baiwangUrl = http://118.190.133.140/api/service/jwapi
+baiwangDownload=
+
+spring.mail.host=smtp.163.com
+spring.mail.username=xxx@163.com
+spring.mail.password=xxxx
+spring.mail.default-encoding=UTF-8
+
+mail.fromMail.addr=liwendongone@163.com
+
+# redis
+spring.redis.database=0
+spring.redis.host=localhost
+spring.redis.pool.max-active=8
+spring.redis.pool.max-idle=8
+spring.redis.pool.max-wait=-1
+spring.redis.pool.min-idle=0
+spring.redis.port=6379
+spring.redis.timeout=0
+
+
+# grpc设置
+grpc.log.server.host = 0.0.0.0
+grpc.log.server.port = 9099
+
+# 友盟推送设置
+umeng.push.appkey=
+umeng.push.appMasterSecret=
+
+#
+payment.wechat.appId=
+payment.wechat.mchId=
+payment.wechat.apiKey=
+payment.wechat.cert=
+payment.wechat.certPass=
+payment.wechat.notifyUrl=
+
+# 以分钟作为单位
+error.time.length=5
+
+# jackson 时区设置
+spring.jackson.time-zone=GMT+8
+
+# 全局sql注入
+mybatis-plus.global-config.sql-injector=com.yxytech.parkingcloud.core.config.YXYSqlInjector

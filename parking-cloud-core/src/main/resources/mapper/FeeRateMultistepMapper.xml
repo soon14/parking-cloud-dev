@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.FeeRateMultistepMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.FeeRateMultistep">
+		<id column="id" property="id" />
+		<result column="fee_rate_id" property="feeRateId" />
+		<result column="price" property="price" />
+		<result column="pricing_unit" property="pricingUnit" />
+		<result column="step_duration" property="stepDuration" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+	</resultMap>
+	<select id="findById" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateMultistep"
+			resultType="com.yxytech.parkingcloud.core.entity.FeeRateMultistep">
+		select r.* from fee_rate_multistep r where r.id = #{id}
+	</select>
+
+	<select id="getRateSteps" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		m.*
+		from
+		yxy_fee_rate_multistep m where m.fee_rate_id=#{feeRateId} order by m.sort_number
+	</select>
+
+	<insert id="create" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateMultistep">
+		insert into yxy_fee_rate_multistep
+
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			fee_rate_id,price,pricing_unit,step_duration,sort_number,start_time,end_time
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{feeRateId},
+			#{price},
+			#{pricingUnit},
+			#{stepDuration},
+			#{sortNumber},
+			#{startTime},
+			#{endTime}
+		</trim>
+	</insert>
+	<update id="update" parameterType="com.yxytech.parkingcloud.core.entity.FeeRateMultistep">
+		update yxy_fee_rate_multistep m
+		<set>
+			price = #{price},
+			pricing_unit = #{pricingUnit},
+			step_duration = #{stepDuration},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			sort_number = #{sortNumber}
+		</set>
+		where id=#{id}
+	</update>
+
+</mapper>

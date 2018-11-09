@@ -1,0 +1,1 @@
+ALTER TABLE yxy_whitelist RENAME COLUMN organization_id TO org_id;

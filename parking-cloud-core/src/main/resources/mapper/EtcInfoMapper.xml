@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.EtcInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.EtcInfo">
+		<result column="etc_number" property="etcNumber" />
+		<result column="etc_net_id" property="etcNetId" />
+		<result column="version" property="version" />
+	</resultMap>
+
+	<insert id="repairTableByVersion">
+		INSERT INTO yxy_etc_info (etc_number, etc_net_id, VERSION)
+		SELECT etc_number, etc_net_id, ${version} AS etc_version FROM yxy_etc_history
+		WHERE etc_version @> '[${version}]'::jsonb
+	</insert>
+
+</mapper>

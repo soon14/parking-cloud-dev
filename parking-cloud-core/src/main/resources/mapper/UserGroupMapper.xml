@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.UserGroupMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.UserGroup">
+		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="name" property="name" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_by" property="updatedBy" />
+	</resultMap>
+
+	<select id="selectPage" resultType="com.yxytech.parkingcloud.core.entity.UserGroup">
+		SELECT yxy_user_group.*,
+		yxy_organzation.full_name as orgName
+		FROM yxy_user_group
+		LEFT JOIN yxy_organzation ON
+		yxy_user_group.org_id = yxy_organzation.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+		order by yxy_user_group.id asc
+	</select>
+
+</mapper>

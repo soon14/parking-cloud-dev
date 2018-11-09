@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.OrderInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		<id column="id" property="id" />
+		<result column="order_number" property="orderNumber" />
+		<result column="user_id" property="userId" />
+		<result column="customer_car_id" property="customerCarId" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="total_amount" property="totalAmount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="free_amount" property="freeAmount" />
+		<result column="prepaid_amount" property="prepaidAmount" />
+		<result column="paid_amount" property="paidAmount" />
+		<result column="invoice_amount" property="invoiceAmount" />
+		<result column="created_at" property="createdAt" />
+		<result column="enter_at" property="enterAt" />
+		<result column="leave_at" property="leaveAt" />
+		<result column="duration" property="duration" />
+		<result column="requested_bill" property="requestedBill" />
+		<result column="status" property="status" />
+		<result column="car_status" property="carStatus" />
+		<result column="from_type" property="fromType" />
+		<result column="is_valid" property="isValid" />
+		<result column="remark" property="remark" />
+		<result column="car_type" property="carType" />
+		<result column="last_payment_time" property="lastPaymentTime" />
+	</resultMap>
+
+	<resultMap id="orderStaticsMap" type="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		<result column="org_id" property="organizationId" />
+		<result column="invoice_amount" property="invoiceAmount" />
+		<result column="orderCount" property="orderCount" />
+	</resultMap>
+
+	<resultMap id="joinMap" type="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		<id column="id" property="id" />
+		<result column="order_number" property="orderNumber" />
+		<result column="user_id" property="userId" />
+		<result column="customer_car_id" property="customerCarId" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="total_amount" property="totalAmount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="free_amount" property="freeAmount" />
+		<result column="prepaid_amount" property="prepaidAmount" />
+		<result column="paid_amount" property="paidAmount" />
+		<result column="invoice_amount" property="invoiceAmount" />
+		<result column="created_at" property="createdAt" />
+		<result column="enter_at" property="enterAt" />
+		<result column="leave_at" property="leaveAt" />
+		<result column="duration" property="duration" />
+		<result column="requested_bill" property="requestedBill" />
+		<result column="status" property="status" />
+		<result column="car_status" property="carStatus" />
+		<result column="from_type" property="fromType" />
+		<result column="is_valid" property="isValid" />
+		<result column="remark" property="remark" />
+		<result column="car_type" property="carType" />
+		<result column="last_payment_time" property="lastPaymentTime" />
+		<association property="parkingInfo" column="order_id" javaType="com.yxytech.parkingcloud.core.entity.OrderParkingInfo">
+			<result column="order_id" property="orderId" />
+			<result column="parking_id" property="parkingId" />
+			<result column="parking_name" property="parkingName" />
+			<result column="parking_address" property="parkingAddress" />
+			<result column="in_parking_port_id" property="inParkingPortId" />
+			<result column="in_parking_port_code" property="inParkingPortCode" />
+			<result column="out_parking_port_id" property="outParkingPortId" />
+			<result column="out_parking_port_code" property="outParkingPortCode" />
+			<result column="in_parking_lane_id" property="inParkingLaneId" />
+			<result column="in_parking_lane_code" property="inParkingLaneCode" />
+			<result column="out_parking_lane_id" property="outParkingLaneId" />
+			<result column="out_parking_lane_code" property="outParkingLaneCode" />
+			<result column="parking_cell_id" property="parkingCellId" />
+			<result column="parking_cell_code" property="parkingCellCode" />
+		</association>
+	</resultMap>
+
+    <select id="getDetail" resultMap="joinMap" resultType="com.yxytech.parkingcloud.core.entity.OrderInfo">
+        SELECT * FROM yxy_order_info a
+        LEFT JOIN yxy_order_parking_info b
+        ON a.id = b.order_id
+        WHERE a.id = #{id}
+		/*parking_id:a.parking_id*/
+    </select>
+
+	<select id="getInParkingByCell" resultType="java.lang.Integer">
+		SELECT count(a.id) FROM yxy_order_info a
+		JOIN yxy_order_parking_info b
+		ON a.id = b.order_id
+		WHERE b.parking_cell_id = #{cellId} AND b.parking_id = #{parkingId}
+		AND a.car_status = 1 AND a.is_valid is TRUE
+	</select>
+
+	<resultMap id="joinInvoiceMap" type="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		<id column="id" property="id" />
+		<result column="order_number" property="orderNumber" />
+		<result column="user_id" property="userId" />
+		<result column="customer_car_id" property="customerCarId" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="total_amount" property="totalAmount" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="free_amount" property="freeAmount" />
+		<result column="prepaid_amount" property="prepaidAmount" />
+		<result column="paid_amount" property="paidAmount" />
+		<result column="invoice_amount" property="invoiceAmount" />
+		<result column="created_at" property="createdAt" />
+		<result column="enter_at" property="enterAt" />
+		<result column="leave_at" property="leaveAt" />
+		<result column="duration" property="duration" />
+		<result column="requested_bill" property="requestedBill" />
+		<result column="status" property="status" />
+		<result column="car_status" property="carStatus" />
+		<result column="from_type" property="fromType" />
+		<result column="is_valid" property="isValid" />
+		<result column="remark" property="remark" />
+		<association property="invoiceInformationRequest" resultMap="com.yxytech.parkingcloud.core.mapper.InvoiceInformationRequestMapper.joinResultMap"></association>
+	</resultMap>
+
+
+	<select id="invoiceSelectPage" resultMap="joinInvoiceMap" resultType="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		SELECT * FROM yxy_order_info
+		JOIN yxy_order_invoice ON yxy_order_info.id = yxy_order_invoice.order_id
+		LEFT JOIN yxy_invoice_information_request ON yxy_order_invoice.invoice_id = yxy_invoice_information_request.invoice_id
+		INNER JOIN yxy_invoice_information_result ON yxy_invoice_information_request.invoice_id = yxy_invoice_information_result.invoice_id
+		LEFT JOIN yxy_customer ON yxy_invoice_information_request.customer_id = yxy_customer.id
+		LEFT JOIN yxy_sales_information ON yxy_invoice_information_request.sale_id = yxy_sales_information.id
+		LEFT JOIN yxy_organzation ON yxy_sales_information.org_id = yxy_organzation.id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:yxy_order_info.parking_id*/
+		</where>
+		ORDER BY yxy_order_info.id ASC
+	</select>
+
+
+	<select id="invoiceSelectList" resultMap="orderStaticsMap" resultType="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		SELECT sum(invoice_amount) as invoice_amount, count(id) as orderCount, org_id
+		FROM yxy_order_info
+		<where>
+			${ew.sqlSegment}
+		</where>
+		GROUP BY org_id
+	</select>
+
+
+	<select id="organzationSelectList" resultMap="BaseResultMap" resultType="com.yxytech.parkingcloud.core.entity.OrderInfo">
+		SELECT id, parking_id, parking_name,
+		 invoice_amount, plate_number,
+		 plate_color, enter_at, car_status,
+		 status
+		FROM yxy_order_info
+		<where>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY id DESC
+	</select>
+
+	<select id="selectOrganizationInvoiceInfo" resultType="java.util.Map">
+		select org_id as "organizationId", count(id) as times, sum(invoice_amount) as "invoiceAmounts"
+		from yxy_order_info
+		where
+			user_id = #{id}
+		and requested_bill = false
+		and invoice_amount > 0
+		and status = 1
+		group by org_id
+	</select>
+
+	<select id="selectInUseParkingCells" resultType="java.util.Map">
+		SELECT parking_id AS "parkingId", count(id) AS "usedCells" FROM yxy_order_info
+		WHERE car_status = 1 AND status = 0 and is_valid is true GROUP BY parking_id
+	</select>
+
+</mapper>

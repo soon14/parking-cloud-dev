@@ -1,0 +1,1 @@
+ALTER TABLE yxy_invoice_information_accept ADD COLUMN org_id bigint;

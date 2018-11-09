@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ParkingTimeLengthStatisticsMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.ParkingTimeLengthStatistics">
+		<id column="id" property="id" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="lt15" property="lt15" />
+		<result column="gt15lt30" property="gt15lt30" />
+		<result column="gt30lt45" property="gt30lt45" />
+		<result column="gt45lt60" property="gt45lt60" />
+		<result column="gt60lt90" property="gt60lt90" />
+		<result column="gt90lt120" property="gt90lt120" />
+		<result column="gt120lt150" property="gt120lt150" />
+		<result column="gt150lt180" property="gt150lt180" />
+		<result column="gt180lt240" property="gt180lt240" />
+		<result column="gt240" property="gt240" />
+		<result column="datetime" property="datetime" />
+		<result column="in_times" property="inTimes" />
+		<result column="out_times" property="outTimes" />
+		<result column="type" property="type" />
+		<result column="month" property="month" />
+	</resultMap>
+
+</mapper>

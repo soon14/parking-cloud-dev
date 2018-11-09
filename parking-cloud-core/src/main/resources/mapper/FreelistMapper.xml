@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.FreelistMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.Freelist">
+		<id column="id" property="id" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="plate_color" property="plateColor" />
+		<result column="parking_id" property="parkingId" />
+		<result column="org_id" property="organizationId"/>
+		<result column="created_at" property="createdAt" />
+		<result column="created_by" property="createdBy" />
+		<result column="updated_at" property="updatedAt" />
+		<result column="updated_by" property="updatedBy" />
+		<result column="started_at" property="startedAt" />
+		<result column="end_at" property="endAt" />
+		<result column="total_times" property="totalTimes" />
+		<result column="used_times" property="usedTimes" />
+		<result column="join_reason" property="joinReason" />
+		<result column="out_reason" property="outReason" />
+		<result column="is_valid" property="valid" />
+	</resultMap>
+
+    <select id="customerSelect" resultType="com.yxytech.parkingcloud.core.entity.Freelist">
+		SELECT
+		yxy_freelist.*,
+		yxy_freelist.is_valid AS valid,
+		yxy_parking.full_name AS parkingName,
+		yxy_organzation.full_name AS organizationName
+		FROM yxy_freelist
+		LEFT JOIN yxy_parking ON yxy_freelist.parking_id = yxy_parking.id
+		LEFT JOIN yxy_organzation
+		ON yxy_parking.operator_org_id = yxy_organzation.id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:yxy_freelist.parking_id*/
+		</where>
+		ORDER BY yxy_freelist.id ASC
+	</select>
+
+	<update id="updateForUsedTimes">
+		UPDATE yxy_freelist SET used_times = used_times + #{times} WHERE id = #{id}
+	</update>
+</mapper>

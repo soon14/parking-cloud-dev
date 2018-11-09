@@ -1,0 +1,30 @@
+CREATE TABLE "yxy_fee_rate_rule" (
+"id" bigserial,
+"desc" varchar(128) DEFAULT NULL::character varying,
+"vehicle_type" int4,
+"on_festival" bool DEFAULT true,
+"on_mon" bool DEFAULT true,
+"on_tue" bool DEFAULT true,
+"on_wed" bool DEFAULT true,
+"on_thu" bool DEFAULT true,
+"on_fri" bool DEFAULT true,
+"on_sat" bool DEFAULT true,
+"on_sun" bool DEFAULT true,
+"free_in_duration" int4,
+"free_out_duration" int4,
+"is_valid" bool DEFAULT true,
+
+"type" char(1) NOT NULL,
+"is_cycled" bool DEFAULT false,
+"cycle_type" int4,
+"cycle_start" VARCHAR(10),
+"cycle_fee_type" int4,
+"max_fee" numeric(10,2) DEFAULT NULL::numeric,
+
+"created_at" timestamp(6),
+"updated_at" timestamp(6),
+"created_by" int8,
+"updated_by" int8,
+"note" varchar(500) DEFAULT NULL::character varying,
+primary key (id)
+);

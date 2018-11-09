@@ -1,0 +1,1 @@
+ALTER TABLE yxy_invoice_information_request ADD org_id bigint;

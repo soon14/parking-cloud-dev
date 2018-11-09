@@ -1,0 +1,1 @@
+alter table yxy_role add column internal boolean default false;

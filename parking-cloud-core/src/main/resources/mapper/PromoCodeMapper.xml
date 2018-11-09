@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.PromoCodeMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.PromoCode">
+		<id column="id" property="id" />
+		<result column="coupon_id" property="couponId" />
+		<result column="promo_code" property="promoCode" />
+		<result column="status" property="status" />
+		<result column="receive_start" property="receiveStart" />
+		<result column="receive_end" property="receiveEnd" />
+		<result column="started_at" property="startedAt" />
+		<result column="end_at" property="endAt" />
+		<result column="describe" property="describe" />
+	</resultMap>
+
+	<select id="selectBatchIds" resultMap="BaseResultMap">
+		SELECT
+			yxy_promo_code.*, yxy_coupon_info.can_superposed AS canSuperposed, yxy_coupon_info.max_of_superposed AS maxOfSuperposed,
+			yxy_coupon_info.min_use_money AS minUseMoney, yxy_coupon_info.max_superposed_money AS maxSuperposedMoney,
+			yxy_coupon_info.can_use_with_whitelist AS canUseWithWhitelist
+		FROM yxy_promo_code LEFT JOIN yxy_coupon_info ON yxy_promo_code.coupon_id = yxy_coupon_info.id
+		WHERE yxy_promo_code.id IN (
+			<foreach collection="list" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
+	</select>
+</mapper>

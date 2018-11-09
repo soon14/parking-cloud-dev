@@ -1,0 +1,67 @@
+require 'pg'
+
+$exectued_table = []
+$conn = PG.connect(dbname: 'my_database',host: '127.0.0.1', port: 5432, user: 'postgres', password: '123456')
+
+$conn.exec("SELECT name from exectued_table") do |result|
+    result.each do |row|
+        # print "#{row.values_at('name')}"
+        $exectued_table << row.values_at('name')[0]
+    end
+end
+
+def traverse_dir(file_path)
+  if File.directory? file_path
+    Dir.foreach(file_path) do |file|
+      if file != "." and file != ".."
+        traverse_dir(file_path+"/"+file)
+      end
+    end
+  else #查看文件，并且执行sql文件
+
+    if File.basename(file_path).to_str != "initial_data.sql" #遍历文件中的sql
+       #先执行c
+      if !$exectued_table.include? File.basename(file_path).to_str && File.basename(file_path).to_str.slice(0) == "c"       #变成string才能这样搞,没有执行过的sql才可以执行
+
+        # 读取文件，执行sql
+        begin
+          io = File.open(file_path)
+          data = io.read()
+          res = $conn.exec("#{data.to_str}")
+          $conn.exec("INSERT INTO exectued_table (name) VALUES ('#{File.basename(file_path)}')")
+        rescue
+          io.close()
+        end
+      end
+    end
+  end
+end
+
+def traverse2(file_path)
+  if File.directory? file_path
+    Dir.foreach(file_path) do |file|
+      if file != "." and file != ".."
+        traverse2(file_path+"/"+file)
+      end
+    end
+  else #查看文件，并且执行sql文件
+
+    if File.basename(file_path).to_str != "initial_data.sql" #遍历文件中的sql
+       #先执行c
+      if !$exectued_table.include? File.basename(file_path).to_str && File.basename(file_path).to_str.slice(0) != "c"       #变成string才能这样搞,没有执行过的sql才可以执行
+        # 读取文件，执行sql
+        begin
+          io = File.open(file_path)
+          data = io.read()
+          res = $conn.exec("#{data.to_str}")
+          $conn.exec("INSERT INTO exectued_table (name) VALUES ('#{File.basename(file_path)}')")
+        rescue
+          io.close()
+        end
+      end
+    end
+  end
+end
+
+traverse_dir('/Users/zhangyiqing/work/parking-cloud/parking-cloud-core/database')
+traverse2('/Users/zhangyiqing/work/parking-cloud/parking-cloud-core/database')

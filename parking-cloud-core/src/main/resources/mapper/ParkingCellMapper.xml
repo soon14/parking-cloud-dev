@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ParkingCellMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.ParkingCell">
+		<id column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="roadbed_code" property="roadbedCode" />
+		<result column="parking_id" property="parkingId" />
+		<result column="gps" property="gps" />
+		<result column="parking_cell_long" property="parkingCellLong" />
+		<result column="parking_cell_wide" property="parkingCellWide" />
+		<result column="parking_cell_direction" property="parkingCellDirection" />
+		<result column="is_using" property="isUsing" />
+		<result column="created_by" property="createdBy" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_by" property="updatedBy" />
+		<result column="updated_at" property="updatedAt" />
+	</resultMap>
+
+	<insert id="createParkingCell" parameterType="com.yxytech.parkingcloud.core.entity.ParkingCell">
+		insert into yxy_parking_cell
+		(code,roadbed_code,parking_id,gps,parking_cell_long,parking_cell_wide,parking_cell_direction,is_using,
+		created_by,created_at,updated_by,updated_at)
+		values
+		(#{code},#{roadbedCode},#{parkingId},'(${gps})',
+		#{parkingCellLong},#{parkingCellWide},#{parkingCellDirection},#{isUsing},#{createdBy},#{createdAt},
+		#{updatedBy},#{updatedAt})
+
+	</insert>
+
+	<update id="update" parameterType="com.yxytech.parkingcloud.core.entity.ParkingCell">
+		update yxy_parking_cell
+		 <set>
+			 <if test="code != null">code=#{code},</if>
+			 <if test="roadbedCode != null">roadbed_code=#{roadbedCode},</if>
+			 <if test="parkingId != null">parking_id=#{parkingId},</if>
+			 <if test="gps != null"> gps='(${gps})',</if>
+			 <if test="parkingCellLong != null"> parking_cell_long=#{parkingCellLong},</if>
+			 <if test="parkingCellWide != null"> parking_cell_wide=#{parkingCellWide},</if>
+			 <if test="parkingCellDirection != null">parking_cell_direction=#{parkingCellDirection},</if>
+			 <if test="isUsing != null">is_using=#{isUsing},</if>
+			 <if test="createdBy != null">created_by=#{createdBy},</if>
+			 <if test="createdAt != null">created_at=#{createdAt},</if>
+			 <if test="updatedBy != null">updated_by=#{updatedBy},</if>
+			 <if test="updatedAt != null">updated_at=#{updatedAt}</if>
+		 </set>
+		where id=#{id}
+
+	</update>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update yxy_parking_cell
+			<set>
+				<if test="item.code != null">code=#{item.code},</if>
+				<if test="item.roadbedCode != null">roadbed_code=#{item.roadbedCode},</if>
+				<if test="item.parkingId != null">parking_id=#{item.parkingId},</if>
+				<if test="item.gps != null"> gps='(${item.gps})',</if>
+				<if test="item.parkingCellLong != null"> parking_cell_long=#{item.parkingCellLong},</if>
+				<if test="item.parkingCellWide != null"> parking_cell_wide=#{item.parkingCellWide},</if>
+				<if test="item.parkingCellDirection != null">parking_cell_direction=#{item.parkingCellDirection},</if>
+				<if test="item.using != null">is_using=#{item.using},</if>
+				<if test="item.createdBy != null">created_by=#{item.createdBy},</if>
+				<if test="item.createdAt != null">created_at=#{item.createdAt},</if>
+				<if test="item.updatedBy != null">updated_by=#{item.updatedBy},</if>
+				<if test="item.updatedAt != null">updated_at=#{item.updatedAt}</if>
+			</set>
+			where id=#{item.id}
+		</foreach>
+	</update>
+
+	<select id="selectPage" resultType="com.yxytech.parkingcloud.core.entity.ParkingCell">
+		SELECT yxy_parking_cell.*, yxy_parking.full_name AS parkingName FROM yxy_parking_cell
+		LEFT JOIN yxy_parking ON
+		yxy_parking_cell.parking_id = yxy_parking.id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:yxy_parking_cell.parking_id*/
+		</where>
+		ORDER BY yxy_parking_cell.id ASC
+	</select>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.MagneticDeviceMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.MagneticDevice">
+		<id column="id" property="id" />
+		<result column="system_number" property="systemNumber" />
+		<result column="sn" property="sn" />
+		<result column="put_in_at" property="putInAt" />
+		<result column="put_out_at" property="putOutAt" />
+		<result column="startusing_at" property="startusingAt" />
+		<result column="gps" property="gps" />
+		<result column="battery_voltage" property="batteryVoltage" />
+		<result column="battery_power" property="batteryPower" />
+		<result column="fac_org_id" property="facOrgId" />
+		<result column="ip" property="ip" />
+		<result column="manage_org_id" property="manageOrgId" />
+		<result column="manager" property="manager" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_cell_code" property="parkingCellCode" />
+		<result column="remarks" property="remarks" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<insert id="create" parameterType="com.yxytech.parkingcloud.core.entity.MagneticDevice">
+		insert into yxy_magnetic_device
+		(system_number,sn,put_in_at,put_out_at,startusing_at,gps,battery_voltage,
+		battery_power,fac_org_id,ip,manage_org_id,manager,parking_id,parking_cell_code,remarks)
+		values
+		(
+		#{systemNumber},#{sn},#{putInAt},#{putOutAt},#{startusingAt},'(${gps})',#{batteryVoltage},#{batteryPower},
+		#{facOrgId},#{ip},#{manageOrgId},#{manager},#{parkingId},#{parkingCellCode},#{remarks}
+		)
+		
+	</insert>
+	
+	<update id="update" parameterType="com.yxytech.parkingcloud.core.entity.MagneticDevice">
+		update yxy_magnetic_device <set>
+		<if test="systemNumber != null">system_number=#{systemNumber},</if>
+		<if test="sn != null">sn=#{sn},</if>
+		<if test="putInAt != null">put_in_at=#{putInAt},</if>
+		<if test="putOutAt != null">put_out_at=#{putOutAt},</if>
+		<if test="startusingAt != null">startusing_at=#{startusingAt},</if>
+		<if test="gps != null">gps='(${gps})',</if>
+		<if test="batteryVoltage != null">battery_voltage=#{batteryVoltage},</if>
+		<if test="batteryPower != null">battery_power=#{batteryPower},</if>
+		<if test="facOrgId != null">fac_org_id=#{facOrgId},</if>
+		<if test="ip != null">ip=#{ip},</if>
+		<if test="manageOrgId != null">manage_org_id=#{manageOrgId},</if>
+		<if test="manager != null">manager=#{manager},</if>
+		<if test="parkingId != null">parking_id=#{parkingId},</if>
+		<if test="parkingCellCode != null">parking_cell_code=#{parkingCellCode},</if>
+		<if test="remarks != null">remarks=#{remarks},</if>
+		<if test="status != null">status=#{status}</if>
+	   </set>
+		where id=#{id}
+    </update>
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update yxy_magnetic_device
+			<set>
+			<if test="item.systemNumber != null">system_number=#{item.systemNumber},</if>
+			<if test="item.sn != null">sn=#{item.sn},</if>
+			<if test="item.putInAt != null">put_in_at=#{item.putInAt},</if>
+			<if test="item.putOutAt != null">put_out_at=#{item.putOutAt},</if>
+			<if test="item.startusingAt != null">startusing_at=#{item.startusingAt},</if>
+			<if test="item.gps != null">gps='(${item.gps})',</if>
+			<if test="item.batteryVoltage != null">battery_voltage=#{item.batteryVoltage},</if>
+			<if test="item.batteryPower != null">battery_power=#{item.batteryPower},</if>
+			<if test="item.facOrgId != null">fac_org_id=#{item.facOrgId},</if>
+			<if test="item.ip != null">ip=#{item.ip},</if>
+			<if test="item.manageOrgId != null">manage_org_id=#{item.manageOrgId},</if>
+			<if test="item.manager != null">manager=#{item.manager},</if>
+			<if test="item.parkingId != null">parking_id=#{item.parkingId},</if>
+			<if test="item.parkingCellCode != null">parking_cell_code=#{item.parkingCellCode},</if>
+			<if test="item.remarks != null">remarks=#{item.remarks},</if>
+			<if test="item.status != null">status=#{item.status}</if>
+		</set>
+			where id=#{item.id}
+	    </foreach>
+	</update>
+	<select id="selectByPage" resultType="com.yxytech.parkingcloud.core.entity.MagneticDevice">
+		select md.*,
+		org1.full_name as manageOrgName,
+		org2.full_name as facOrgName,
+		p.full_name as parkingName
+		from yxy_magnetic_device md
+		left join yxy_organzation org1 on md.manage_org_id = org1.id
+		left join yxy_organzation org2 on md.fac_org_id = org2.id
+		left join yxy_parking p on md.parking_id = p.id
+		<where>
+			${ew.sqlSegment}
+			/*parking_id:md.parking_id*/
+		</where>
+		order by md.id asc
+	</select>
+</mapper>

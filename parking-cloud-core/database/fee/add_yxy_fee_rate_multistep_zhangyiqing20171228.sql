@@ -1,0 +1,1 @@
+ALTER TABLE yxy_fee_rate_multistep ADD org_id bigint;

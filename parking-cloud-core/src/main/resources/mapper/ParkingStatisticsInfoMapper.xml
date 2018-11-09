@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ParkingStatisticsInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		<id column="id" property="id" />
+		<result column="cell_used_time_length" property="cellUsedTimeLength" />
+		<result column="cell_utilization" property="cellUtilization" />
+		<result column="cell_reverse_rate" property="cellReverseRate" />
+		<result column="cell_usage" property="cellUsage" />
+		<result column="cell_count" property="cellCount" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="gross_income" property="grossIncome" />
+		<result column="wechat_income" property="wechatIncome" />
+		<result column="alipay_income" property="alipayIncome" />
+		<result column="union_pay_income" property="unionPayIncome" />
+		<result column="discount_income" property="discountIncome" />
+		<result column="other_income" property="otherIncome" />
+		<result column="datetime" property="datetime" />
+		<result column="hour" property="hour" />
+		<result column="month" property="month" />
+	</resultMap>
+
+	<resultMap id="selectTopList" type="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+
+		<id column="id" property="id" />
+		<result column="cell_utilization" property="cellUtilization" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="datetime" property="datetime" />
+		<result column="hour" property="hour" />
+	</resultMap>
+
+	<resultMap id="joinListMap" type="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		<result column="cell_usage" property="cellUsage" />
+		<result column="parking_name" property="parkingName" />
+		<result column="parking_id" property="parkingId" />
+		<result column="datetime" property="datetime" />
+		<result column="hour" property="hour" />
+	</resultMap>
+
+	<select id="selectList" resultMap="joinListMap" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		SELECT cell_utilization,cell_reverse_rate,cell_usage,gross_income,wechat_income,
+				alipay_income,union_pay_income,discount_income,other_income,parking_name,
+				datetime,hour
+		FROM yxy_parking_statistics_info
+		<where>
+			${ew.sqlSegment}
+		</where>
+		/*parking_id:parking_id*/
+		ORDER BY parking_id DESC ,hour ASC
+	</select>
+
+	<select id="selectByMonth" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		SELECT cell_utilization,cell_reverse_rate,cell_usage,
+				gross_income,wechat_income,alipay_income,union_pay_income,
+				discount_income,other_income, parking_name, hour, datetime
+		FROM yxy_parking_statistics_info
+		<where>
+			${ew.sqlSegment}
+		</where>
+		/*parking_id:parking_id*/
+		ORDER BY parking_id DESC ,hour ASC
+	</select>
+
+    <select id="selectHistoryRank" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		select sum(cell_utilization) as cell_utilization,
+			sum(cell_reverse_rate) as cell_reverse_rate,
+			sum(cell_usage) as cell_usage,
+			sum(gross_income) as gross_income,
+			sum(wechat_income) as wechat_income,
+			sum(alipay_income) as alipay_income,
+			sum(union_pay_income) as union_pay_income,
+			sum(discount_income) as discount_income,
+			sum(other_income) as other_income,
+			parking_id,
+			parking_name
+		from yxy_parking_statistics_info where hour = 24 group by parking_id, parking_name
+	</select>
+
+	<select id="selectPassedMonthInfo" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		select sum(cell_utilization) / ${length} as cell_utilization,
+		sum(cell_reverse_rate) / ${length} as cell_reverse_rate,
+		sum(cell_usage) / ${length} as cell_usage,
+		sum(gross_income) as gross_income,
+		sum(wechat_income) as wechat_income,
+		sum(alipay_income) as alipay_income,
+		sum(union_pay_income) as union_pay_income,
+		sum(discount_income) as discount_income,
+		sum(other_income) as other_income,
+		parking_id,
+		parking_name
+		from yxy_parking_statistics_info
+		<where>
+			${ew.sqlSegment}
+		</where>
+		/*parking_id:parking_id*/
+		group by parking_id, parking_name
+	</select>
+
+	<select id="selectTopList" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		SELECT * FROM yxy_parking_statistics_info_view WHERE parking_id IN
+		(
+			SELECT parking_id FROM
+				yxy_parking_statistics_info_view
+			/*parking_id:parking_id*/
+			GROUP BY parking_id
+			ORDER BY sum(cell_utilization) DESC
+			limit 5
+		)
+		ORDER BY parking_id DESC ,hour ASC
+	</select>
+
+	<select id="selectNewTopList" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+		SELECT * FROM yxy_parking_statistics_info_view WHERE parking_id IN
+		(
+		SELECT parking_id FROM
+		yxy_parking_statistics_info_view
+		/*parking_id:parking_id*/
+		GROUP BY parking_id
+		ORDER BY sum(cell_utilization) DESC
+		limit 10
+		)
+		ORDER BY parking_id DESC ,hour ASC
+	</select>
+
+
+
+	<select id="incomeTop" resultType="com.yxytech.parkingcloud.core.entity.ParkingStatisticsInfo">
+       select parking_id,
+              parking_name,
+			  sum(gross_income) as grossIncome,
+			  sum(wechat_income) as wechatIncome,
+			  sum(alipay_income) as alipayIncome,
+			  sum(union_pay_income) as unionPayIncome,
+			  sum(discount_income) as discountIncome,
+			  sum(other_income) as otherIncome
+		from yxy_parking_statistics_info_view
+		/*parking_id:parking_id*/
+		group by parking_id,parking_name
+		order by  grossIncome desc
+		limit 5
+	</select>
+</mapper>

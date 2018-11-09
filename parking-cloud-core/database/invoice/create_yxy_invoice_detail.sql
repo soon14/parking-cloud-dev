@@ -1,0 +1,27 @@
+--发票详情
+CREATE TABLE "yxy_invoice_detail" (
+  "id" BIGSERIAL,
+  "invoice_id" int4,
+  "invoice_flow_number" varchar(100) COLLATE "default",
+  "row_number" varchar(100) COLLATE "default",
+  "invoice_property" varchar(100) COLLATE "default",
+  "product_code" varchar(100) COLLATE "default",
+  "variety_type" varchar(100) COLLATE "default",
+  "self_defination_code" varchar(100) COLLATE "default",
+  "product_name" varchar(100) COLLATE "default",
+  "product_tax" varchar(100) COLLATE "default",
+  "unit" varchar(100) COLLATE "default",
+  "product_num" int4,
+  "price" numeric,
+  "amout" numeric,
+  "diminish_amout" varchar(100) COLLATE "default",
+  "tax_amout" numeric,
+  "tax_rate" numeric,
+  "cotain_tax_mark" int4,
+  "vat_special_manage" varchar(100) COLLATE "default",
+  "preferential_policie_mark" int4,
+  "free_tax_type" varchar COLLATE "default",
+  "created_at" timestamp(6) NULL,
+  "updated_at" timestamp(6) NULL,
+  "order_id" varchar(200) COLLATE "default"
+);

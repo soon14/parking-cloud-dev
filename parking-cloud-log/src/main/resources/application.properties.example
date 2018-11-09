@@ -1,0 +1,14 @@
+grpc.server.port= 9099
+grpc.server.address= 0.0.0.0
+
+spring.datasource.driver-class-name= org.postgresql.Driver
+spring.datasource.url= jdbc:postgresql://localhost:5432/parkingcloud_dev
+spring.datasource.username= sandect
+spring.datasource.password= 111111
+
+spring.main.banner-mode= off
+
+logs.table-name = yxy_log
+
+logging.config= classpath:log4j2.xml
+logging.path= /var/log/test

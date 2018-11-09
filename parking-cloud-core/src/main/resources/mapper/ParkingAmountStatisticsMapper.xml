@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxytech.parkingcloud.core.mapper.ParkingAmountStatisticsMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yxytech.parkingcloud.core.entity.ParkingAmountStatistics">
+		<id column="id" property="id" />
+		<result column="parking_id" property="parkingId" />
+		<result column="parking_name" property="parkingName" />
+		<result column="receivable_amount" property="receivableAmount" />
+		<result column="paid_amount" property="paidAmount" />
+		<result column="real_paid_aount" property="realPaidAount" />
+		<result column="pre_paid_amount" property="prePaidAmount" />
+		<result column="supplementary_amout" property="supplementaryAmout" />
+		<result column="pre_paid_refunds_amount" property="prePaidRefundsAmount" />
+		<result column="unpaid_amount" property="unpaidAmount" />
+		<result column="alipay_amount" property="alipayAmount" />
+		<result column="wechat_amount" property="wechatAmount" />
+		<result column="discount_amount" property="discountAmount" />
+		<result column="cash_amount" property="cashAmount" />
+		<result column="datetime" property="datetime" />
+		<result column="type" property="type" />
+		<result column="month" property="month" />
+	</resultMap>
+
+</mapper>

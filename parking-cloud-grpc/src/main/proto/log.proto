@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.yxytech.parkingcloud.grpc";
+option java_outer_classname = "LogProto";
+
+
+package log;
+
+// The greeting service definition.
+service Log {
+    // Sends a greeting
+    rpc Log (LogRequest) returns (LogReply) {
+    }
+
+    rpc MDCLog (MDCLogRequest) returns (LogReply) {
+    }
+}
+
+// The request message containing the user's name.
+message LogRequest {
+    string message = 1;
+}
+
+// The response message containing the greetings
+message LogReply {
+    string message = 1;
+}
+
+message MDCLogRequest {
+    map<string, string> mdc = 1;
+}

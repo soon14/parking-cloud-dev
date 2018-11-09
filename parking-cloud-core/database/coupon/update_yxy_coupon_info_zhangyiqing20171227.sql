@@ -1,0 +1,1 @@
+ALTER TABLE yxy_coupon_info RENAME COLUMN organization_id TO org_id;

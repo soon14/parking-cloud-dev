@@ -1,0 +1,20 @@
+CREATE TABLE "yxy_fee_rule" (
+  "id" serial primary key,
+  "vehicle_type" varchar(4) NOT NULL,
+  "on_festival" bool DEFAULT true,
+  "on_mon" bool DEFAULT true,
+  "on_tue" bool DEFAULT true,
+  "on_wed" bool DEFAULT true,
+  "on_thu" bool DEFAULT true,
+  "on_fri" bool DEFAULT true,
+  "on_sat" bool DEFAULT true,
+  "on_sun" bool DEFAULT true,
+  "free_in_duration" int4,
+  "free_out_duration" int4,
+  "is_valid" bool DEFAULT true,
+  "created_at" timestamp(6),
+  "updated_at" timestamp(6),
+  "created_by" int4,
+  "updated_by" int4,
+  "note" varchar(500) DEFAULT NULL::character varying
+);

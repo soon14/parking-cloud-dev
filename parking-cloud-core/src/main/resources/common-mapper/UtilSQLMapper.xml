@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 分页参数 -->
+<mapper namespace="util">
+	<!-- 分页开始 -->
+	<sql id="pageBegin">
+		SELECT A.* FROM (
+  	</sql>
+  	
+  	<!-- 分页结束 -->
+  	<sql id="pageEnd">
+		) A LIMIT ${page}, ${rows}
+  	</sql>
+  	
+  	<!-- 统计分页大小 -->
+  	<sql id="pageCount">
+  		SELECT count(1) as cnt
+  	</sql>
+  	
+  	<!-- mysql 时间函数类 -->
+  	<sql id="date_format">date_format</sql>
+  	
+  	<!-- 时间格式 -->
+  	<sql id="ymdhis">'%Y-%m-%d %H:%i:%s'</sql>
+  	<sql id="ymdhi">'%Y-%m-%d %H:%i'</sql>
+  	<sql id="ymd">'%Y-%m-%d'</sql>
+  	
+  	<!-- 数据库时间 -->
+  	<sql id="sysdate">now()</sql>
+</mapper>

@@ -1,0 +1,23 @@
+server.port= 8081
+
+spring.datasource.driver-class-name= org.postgresql.Driver
+spring.datasource.url= jdbc:postgresql://localhost:5432/parkingcloud_dev
+spring.datasource.userId= sandect
+spring.datasource.password= 111111
+
+# mybatis
+mybatis-plus.mapper-locations= classpath:mapper/*Mapper.xml
+#实体扫描，多个package用逗号或者分号分隔
+mybatis-plus.typeAliasesPackage= com.yxytech.parkingcloud.entity
+#枚举扫描
+mybatis-plus.typeEnumsPackage=com.yxytech.parkingcloud.core.enums
+#主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+mybatis-plus.global-config.id-type= 0
+#字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+mybatis-plus.global-config.field-strategy= 2
+#驼峰下划线转换
+mybatis-plus.global-config.db-column-underline= true
+#刷新mapper 调试神器
+mybatis-plus.global-config.refresh-mapper= true
+mybatis-plus.configuration.map-underscore-to-camel-case= true
+mybatis-plus.configuration.cache-enabled= false
